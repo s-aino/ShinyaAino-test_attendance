@@ -11,3 +11,6 @@ RUN curl -sS https://getcomposer.org/installer | php \
   && composer self-update
 
 WORKDIR /var/www
+
+RUN usermod -u 1000 www-data \
+ && groupmod -g 1000 www-data
