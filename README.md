@@ -27,9 +27,15 @@ composer install
 ```
 ---
 #### 3. .env 作成  
-.env.example をコピーし、以下の DB 設定に変更：
+.env.example をコピー、
+```bash
+cp .env.example .env
+```
+以下の DB 設定に変更：
 ```env
+DB_CONNECTION=mysql
 DB_HOST=mysql
+DB_PORT=3306
 DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
