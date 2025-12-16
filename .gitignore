@@ -1,0 +1,26 @@
+# Node / PHP
+/node_modules
+/vendor
+
+# Laravel
+.env
+.env.backup
+/public/hot
+/public/storage
+/storage/*.key
+.phpunit.result.cache
+
+# Docker
+docker/mysql/data/
+
+# Logs & misc
+npm-debug.log
+yarn-error.log
+
+# IDE
+/.idea
+/.vscode
+
+# bash history
+.bash_history
+**/.bash_history
