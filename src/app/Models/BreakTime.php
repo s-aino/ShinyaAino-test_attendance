@@ -15,6 +15,11 @@ class BreakTime extends Model
         'break_end',
     ];
 
+    protected $casts = [
+        'break_start' => 'datetime:H:i',
+        'break_end' => 'datetime:H:i',
+    ];
+
     // 休憩は1つの勤怠に属する
     public function attendance()
     {

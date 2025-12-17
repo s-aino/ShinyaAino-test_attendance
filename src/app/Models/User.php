@@ -7,13 +7,31 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    // ユーザーは複数の勤怠を持つ
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /* relations */
+
+    // ユーザーの勤怠（1日1件）
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
     }
 
-    // ユーザーは複数の修正申請を出す
+    // ユーザーの修正申請
     public function attendanceCorrectionRequests()
     {
         return $this->hasMany(AttendanceCorrectionRequest::class);

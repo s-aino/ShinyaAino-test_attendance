@@ -15,6 +15,12 @@ class Attendance extends Model
         'status',
     ];
 
+    protected $casts = [
+        'date' => 'date',
+        'clock_in' => 'datetime:H:i',
+        'clock_out' => 'datetime:H:i',
+    ];
+
     // 勤怠は1人のユーザーに属する
     public function user()
     {
