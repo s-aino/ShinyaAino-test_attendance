@@ -36,3 +36,6 @@ yarn-error.log
 # ======================
 .bash_history
 **/.bash_history
+
+# Composer cache
+/.composer
