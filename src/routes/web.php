@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
 | Top
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -23,7 +25,7 @@ Route::get('/dashboard', function () {
         return redirect('/admin');
     }
 
-    return redirect('/user');
+    return redirect('/attendance');
 })->middleware(['auth']);
 
 /*
@@ -31,9 +33,8 @@ Route::get('/dashboard', function () {
 | 仮画面（あとで Blade / Controller に置き換える）
 |--------------------------------------------------------------------------
 */
-Route::get('/user', function () {
-    return '一般ユーザー画面';
-})->middleware(['auth']);
+Route::get('/attendance', [AttendanceController::class, 'index'])
+    ->middleware(['auth']);
 
 Route::get('/admin', function () {
     return '管理者画面';
