@@ -1,33 +1,52 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>ログイン</title>
-</head>
-<body>
-<h1>ログイン</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-<ul style="color:red;">
-    @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-    @endforeach
-</ul>
-@endif
+@section('title', 'ログイン')
 
-<form method="POST" action="{{ route('login') }}">
-    @csrf
-    <div>
-        <label>メール</label>
-        <input type="email" name="email" value="{{ old('email') }}">
-    </div>
-    <div>
-        <label>パスワード</label>
-        <input type="password" name="password">
-    </div>
-    <button type="submit">ログイン</button>
-</form>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endpush
 
-<a href="{{ route('register') }}">会員登録はこちら</a>
-</body>
-</html>
+@section('content')
+<div class="auth-container">
+    <h1 class="auth-title">ログイン</h1>
+
+    <form method="POST" action="{{ route('login') }}" novalidate class="auth-form">
+        @csrf
+
+        <div class="auth-field">
+            <label for="email">メールアドレス</label>
+            <input
+                id="email"
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+                autocomplete="email">
+
+            @error('email')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="auth-field">
+            <label for="password">パスワード</label>
+            <input
+                id="password"
+                type="password"
+                name="password"
+                autocomplete="current-password">
+
+            @error('password')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <button type="submit" class="auth-button">
+            ログインする
+        </button>
+
+        <div class="auth-link">
+            <a href="{{ route('register') }}">会員登録はこちら</a>
+        </div>
+    </form>
+</div>
+@endsection

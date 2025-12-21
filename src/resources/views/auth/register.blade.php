@@ -1,41 +1,79 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>会員登録</title>
-</head>
-<body>
-<h1>会員登録</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-<ul style="color:red;">
-    @foreach ($errors->all() as $error)
+@section('title', '会員登録')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endpush
+
+@section('content')
+<div class="auth-container">
+    <h1 class="auth-title">会員登録</h1>
+
+    <!-- {{-- エラーメッセージ --}}
+    @if ($errors->any())
+    <ul class="auth-errors">
+        @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
-    @endforeach
-</ul>
-@endif
+        @endforeach
+    </ul>
+    @endif -->
 
-<form method="POST" action="{{ route('register') }}"novalidate>
-    @csrf
-    <div>
-        <label>名前</label>
-        <input type="text" name="name" value="{{ old('name') }}">
-    </div>
-    <div>
-        <label>メール</label>
-        <input type="email" name="email" value="{{ old('email') }}">
-    </div>
-    <div>
-        <label>パスワード</label>
-        <input type="password" name="password">
-    </div>
-    <div>
-        <label>パスワード確認</label>
-        <input type="password" name="password_confirmation">
-    </div>
-    <button type="submit">登録</button>
-</form>
+    <form method="POST" action="{{ route('register') }}" novalidate class="auth-form">
+        @csrf
 
-<a href="{{ route('login') }}">ログインはこちら</a>
-</body>
-</html>
+        <div class="auth-field">
+            <label for="name">名前</label>
+            <input
+                id="name"
+                type="text"
+                name="name"
+                value="{{ old('name') }}">
+
+            @error('name')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="auth-field">
+            <label for="email">メールアドレス</label>
+            <input
+                id="email"
+                type="email"
+                name="email"
+                value="{{ old('email') }}">
+
+            @error('email')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="auth-field">
+            <label for="password">パスワード</label>
+            <input
+                id="password"
+                type="password"
+                name="password">
+
+            @error('password')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="auth-field">
+            <label for="password_confirmation">パスワード確認</label>
+            <input
+                id="password_confirmation"
+                type="password"
+                name="password_confirmation">
+        </div>
+
+        <button type="submit" class="auth-button">
+            登録する
+        </button>
+    </form>
+
+    <div class="auth-link">
+        <a href="{{ route('login') }}">ログインはこちら</a>
+    </div>
+</div>
+@endsection

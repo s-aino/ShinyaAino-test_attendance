@@ -1,0 +1,109 @@
+/* =====================
+   Auth 共通レイアウト
+===================== */
+.auth-container {
+    max-width: 560px;
+    /* 見本に近い横幅 */
+    margin: 80px auto 0;
+    /* 上に余白、左右中央寄せ */
+    padding: 0 16px;
+    /* スマホ対策 */
+    text-align: center;
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* =====================
+   入力欄
+===================== */
+
+.auth-field {
+    margin-bottom: 24px;
+    text-align: left;
+    /* ラベルと入力は左寄せ */
+}
+
+.auth-field label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.auth-field input {
+    width: 100%;
+    height: 32px;
+    padding: 0 12px;
+
+    border: 2px solid #ccc;
+    border-radius: 4px;
+
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* フォーカス時（←ここ重要） */
+.auth-field input:focus {
+    outline: none;
+    /* 青い枠を消す */
+    border: 2px solid #000;
+    /* 黒く・太く */
+}
+
+/* =====================
+   ボタン
+===================== */
+.auth-button {
+    width: 100%;
+    /* 入力欄と完全一致 */
+    height: 48px;
+
+    background-color: #000;
+    color: #fff;
+
+    border: none;
+    border-radius: 4px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+    margin-top: 38px;
+}
+
+/* ホバー時 */
+.auth-button:hover {
+    opacity: 0.8;
+}
+
+/* =====================
+   リンク
+===================== */
+.auth-link {
+    margin-top: 24px;
+}
+
+.auth-link a {
+    color: #1e90ff;
+    /* 見本っぽい水色 */
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* =====================
+   エラー表示
+===================== */
+.auth-error {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #ff3333;
+    text-align: left;
+}
