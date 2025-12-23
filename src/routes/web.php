@@ -28,14 +28,14 @@ Route::get('/dashboard', function () {
     return redirect('/attendance');
 })->middleware(['auth']);
 
-/*
-|--------------------------------------------------------------------------
-| 仮画面（あとで Blade / Controller に置き換える）
-|--------------------------------------------------------------------------
-*/
-Route::get('/attendance', [AttendanceController::class, 'index'])
-    ->middleware(['auth']);
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/admin', function () {
-    return '管理者画面';
-})->middleware(['auth']);
+    // 勤怠登録画面（一般ユーザー）
+    Route::get('/attendance', [AttendanceController::class, 'index'])
+        ->name('attendance.index');
+    Route::post('/attendance/start', [AttendanceController::class, 'start'])
+        ->name('attendance.start');
+});
+// Route::get('/admin', function () {
+//     return '管理者画面';
+// })->middleware(['auth']);

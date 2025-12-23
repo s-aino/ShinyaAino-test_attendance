@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'COACHTECH')</title>
+    <title>@yield('title', 'Attendance')</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @stack('styles')
