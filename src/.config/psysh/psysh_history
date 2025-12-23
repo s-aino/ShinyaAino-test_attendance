@@ -1,1 +1,2 @@
 Schema::hasTable('attendances');
+App\Models\Attendance::where('date', today())->first();

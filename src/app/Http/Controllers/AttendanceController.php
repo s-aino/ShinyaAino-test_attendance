@@ -55,4 +55,27 @@ class AttendanceController extends Controller
 
         return back()->with('status', '出勤しました。');
     }
+
+    public function end()
+    {
+        $user = Auth::user();
+        $today = Carbon::today();
+
+        $attendance = Attendance::where('user_id', $user->id)
+            ->where('date', $today)
+            ->first();
+
+        // 出勤していない or すでに退勤済み
+        if (! $attendance || $attendance->clock_out) {
+            return back()->withErrors([
+                'attendance' => '退勤できません。',
+            ]);
+        }
+
+        $attendance->update([
+            'clock_out' => Carbon::now(),
+        ]);
+
+        return back()->with('status', '退勤しました。');
+    }
 }

@@ -23,7 +23,6 @@ Google スプレッドシートの「テーブル仕様書」を Markdown 形式
 | date       | date            |    |    | ○  |           | 勤務日                            |
 | clock_in   | time            |    |    |    |           | 出勤時刻                           |
 | clock_out  | time            |    |    |    |           | 退勤時刻                           |
-| status     | string          |    |    | ○  |           | 勤務状態（working / resting / left） |
 | created_at | timestamp       |    |    | ○  |           | レコード作成日時                       |
 | updated_at | timestamp       |    |    | ○  |           | レコード更新日時                       |
 
@@ -34,8 +33,8 @@ Google スプレッドシートの「テーブル仕様書」を Markdown 形式
 | ------------- | --------------- | -- | -- | -- | --------------- | ------ |
 | id            | unsigned bigint | ○  |    | ○  |                 | 休憩ID   |
 | attendance_id | unsigned bigint |    |    | ○  | attendances(id) | 勤怠ID   |
-| break_start   | time            |    |    | ○  |                 | 休憩開始時刻 |
-| break_end     | time            |    |    |    |                 | 休憩終了時刻 |
+| break_start   | datetime            |    |    | ○  |                 | 休憩開始時刻 |
+| break_end     | datetime            |    |    |    |                 | 休憩終了時刻 |
 | created_at    | timestamp       |    |    | ○  |                 | 作成日時   |
 | updated_at    | timestamp       |    |    | ○  |                 | 更新日時   |
 
