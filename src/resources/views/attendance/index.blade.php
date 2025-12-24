@@ -9,8 +9,10 @@
 @section('content')
 <div class="attendance-container">
 
-    <h1 class="attendance-title">勤怠打刻</h1>
-
+    <div class="attendance-status">
+        {{ $statusLabel }}
+    </div>
+    
     {{-- 日付・時刻 --}}
     <div class="attendance-time">
         <p class="attendance-date">{{ $date->format('Y-m-d') }}</p>
@@ -26,17 +28,36 @@
             @csrf
             <button type="submit" class="btn btn-black">出勤</button>
         </form>
-        @elseif ($attendance && ! $attendance->clock_out)
-        {{-- 出勤中 --}}
+        {{-- 出勤中（休憩していない） --}}
+        @elseif ($attendance && ! $attendance->clock_out && ! $onBreak)
+        <form method="POST" action="{{ route('break.start') }}">
+            @csrf
+            <button type="submit" class="btn btn-white">
+                休憩開始
+            </button>
+        </form>
+
         <form method="POST" action="{{ route('attendance.end') }}">
             @csrf
-            <button type="submit" class="btn btn-black">退勤</button>
+            <button type="submit" class="btn btn-black">
+                退勤
+            </button>
         </form>
-        @else
+
+        {{-- 休憩中 --}}
+        @elseif ($attendance && ! $attendance->clock_out && $onBreak)
+        <form method="POST" action="{{ route('break.end') }}">
+            @csrf
+            <button type="submit" class="btn btn-white">
+                休憩終了
+            </button>
+        </form>
+
         {{-- 退勤済み --}}
+        @else
         <p>本日の勤務は終了しました。</p>
         @endif
-    </div>
 
-</div>
-@endsection
+
+    </div>
+    @endsection

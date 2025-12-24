@@ -22,10 +22,34 @@ class AttendanceController extends Controller
             ->where('date', $today)
             ->first();
 
+        $onBreak = false;
+
+        if ($attendance) {
+            $onBreak = \App\Models\BreakTime::where('attendance_id', $attendance->id)
+                ->whereNull('break_end')
+                ->exists();
+        }
+
+        $statusLabel = '勤務外';
+
+        if (! $attendance) {
+            $statusLabel = '勤務外';
+        } elseif ($attendance->clock_out) {
+            $statusLabel = '退勤済み';
+        } elseif ($onBreak) {
+            $statusLabel = '休憩中';
+        } else {
+            $statusLabel = '出勤中';
+        }
+
+
+
         return view('attendance.index', [
             'attendance' => $attendance,
             'date' => $today,
             'time' => $now,
+            'onBreak' => $onBreak,
+            'statusLabel' => $statusLabel,
         ]);
     }
     /**
