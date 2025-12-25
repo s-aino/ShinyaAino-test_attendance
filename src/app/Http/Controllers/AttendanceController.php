@@ -35,7 +35,7 @@ class AttendanceController extends Controller
         if (! $attendance) {
             $statusLabel = '勤務外';
         } elseif ($attendance->clock_out) {
-            $statusLabel = '退勤済み';
+            $statusLabel = '退勤済';
         } elseif ($onBreak) {
             $statusLabel = '休憩中';
         } else {

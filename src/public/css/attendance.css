@@ -1,9 +1,107 @@
+.attendance-container {
+    min-height: calc(100vh - 80px);
+    /* ヘッダー分を除外 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* =========================
+   状態ラベル（上のグレー）
+========================= */
 .attendance-status {
     display: inline-block;
     padding: 6px 16px;
-    margin-bottom: 16px;
     background-color: #e0e0e0;
     color: #555;
     font-size: 14px;
     border-radius: 999px;
+    margin-top: 160px;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   日時・時計
+========================= */
+.attendance-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.attendance-time p {
+    margin: 0;
+}
+
+.attendance-date {
+    font-size: 30px;
+}
+
+
+.attendance-clock {
+    font-size: 72px;
+    font-weight: 700;
+}
+
+/* =========================
+   共通ボタン
+========================= */
+.btn {
+    min-width: 160px;
+    padding: 14px 0;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+}
+
+/* ボタン並び */
+.attendance-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    /* ボタン間の余白 */
+    margin-top: 70px;
+    /* 時計との余白 */
+}
+
+/* =========================
+   黒ボタン（出勤・退勤）
+========================= */
+.btn-black {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-black:hover {
+    opacity: 0.85;
+}
+
+/* =========================
+   白ボタン（休憩入・休憩戻）
+========================= */
+.btn-white {
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    box-shadow: none;
+}
+
+.btn-white:hover {
+    background-color: #e0dede;
+}
+
+/* =========================
+   退勤（お疲れさまでした）
+========================= */
+
+.attendance-finish-message {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 0.05em;
 }
