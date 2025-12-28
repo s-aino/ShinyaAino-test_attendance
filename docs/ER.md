@@ -18,9 +18,8 @@ attendances {
   bigint id PK
   bigint user_id FK
   date date
-  time clock_in
-  time clock_out
-  string status
+  datetime clock_in
+  datetime clock_out
   timestamp created_at
   timestamp updated_at
 }
@@ -28,8 +27,8 @@ attendances {
 breaks {
   bigint id PK
   bigint attendance_id FK
-  time break_start
-  time break_end
+  datetime break_start
+  datetime break_end
   timestamp created_at
   timestamp updated_at
 }

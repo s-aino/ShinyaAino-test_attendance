@@ -18,8 +18,8 @@ class Attendance extends Model
 
     protected $casts = [
         'date' => 'date',
-        'clock_in' => 'datetime:H:i',
-        'clock_out' => 'datetime:H:i',
+        'clock_in' => 'datetime',
+        'clock_out' => 'datetime',
     ];
 
     // 勤怠は1人のユーザーに属する

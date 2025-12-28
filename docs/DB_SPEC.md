@@ -21,8 +21,8 @@ Google スプレッドシートの「テーブル仕様書」を Markdown 形式
 | id         | unsigned bigint | ○  |    | ○  |           | 勤怠ID                           |
 | user_id    | unsigned bigint |    |    | ○  | users(id) | ユーザーID                         |
 | date       | date            |    |    | ○  |           | 勤務日                            |
-| clock_in   | time            |    |    |    |           | 出勤時刻                           |
-| clock_out  | time            |    |    |    |           | 退勤時刻                           |
+| clock_in   | datetime            |    |    |    |           | 出勤時刻                           |
+| clock_out  | datetime            |    |    |    |           | 退勤時刻                           |
 | created_at | timestamp       |    |    | ○  |           | レコード作成日時                       |
 | updated_at | timestamp       |    |    | ○  |           | レコード更新日時                       |
 
