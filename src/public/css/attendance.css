@@ -189,6 +189,7 @@
     border-collapse: collapse;
     text-align: center;
     font-size: 14px;
+    font-variant-numeric: tabular-nums;
 }
 
 .attendance-table thead {
@@ -198,6 +199,8 @@
 .attendance-table td {
     color: #6e6e6e;
     font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
 }
 
 .attendance-table th {

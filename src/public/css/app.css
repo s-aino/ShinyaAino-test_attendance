@@ -5,9 +5,18 @@
 }
 
 body {
-    background-color: #f3f3f3; /* 見本に近い薄グレー */
+    background-color: #f3f3f3;
+    /* 見本に近い薄グレー */
 }
 
+/* =====================
+   文字のフォント
+===================== */
+body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
+        'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #000;
+}
 
 /* =====================
    Header
@@ -79,4 +88,15 @@ body {
     .main {
         padding: 24px 0;
     }
+}
+
+/* =====================
+ <h2>ページタイトルの黒棒
+===================== */
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 12px;
+    border-left: 6px solid #000;
+    margin-bottom: 20px;
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Attendance extends Model
 {
@@ -32,6 +33,31 @@ class Attendance extends Model
     public function breaks()
     {
         return $this->hasMany(BreakTime::class);
+    }
+
+
+    // 休憩合計（分）
+    public function totalBreakMinutes(): int
+    {
+        return $this->breaks
+            ->whereNotNull('break_end')
+            ->sum(function ($break) {
+                return $break->break_start->diffInMinutes($break->break_end);
+            });
+    }
+
+    // 実働合計（分）
+    //退勤が無ければ null
+    public function totalWorkMinutes(): ?int
+    {
+        if (!$this->clock_in || !$this->clock_out) {
+            return null;
+        }
+
+        $totalMinutes = $this->clock_in->diffInMinutes($this->clock_out);
+        $breakMinutes = $this->totalBreakMinutes();
+
+        return max(0, $totalMinutes - $breakMinutes);
     }
 
     // 勤怠は複数の修正申請を持つ（履歴として）

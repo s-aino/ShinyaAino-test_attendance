@@ -66,9 +66,7 @@ class AttendanceController extends Controller
             ->first();
 
         if ($attendance) {
-            return back()->withErrors([
-                'attendance' => '本日はすでに出勤済みです。',
-            ]);
+            return back();
         }
 
         Attendance::create([
@@ -77,7 +75,7 @@ class AttendanceController extends Controller
             'clock_in' => Carbon::now(),
         ]);
 
-        return back()->with('status', '出勤しました。');
+        return back();
     }
 
     public function end()
@@ -91,15 +89,13 @@ class AttendanceController extends Controller
 
         // 出勤していない or すでに退勤済み
         if (! $attendance || $attendance->clock_out) {
-            return back()->withErrors([
-                'attendance' => '退勤できません。',
-            ]);
+            return back();
         }
 
         $attendance->update([
             'clock_out' => Carbon::now(),
         ]);
 
-        return back()->with('status', '退勤しました。');
+        return back();
     }
 }

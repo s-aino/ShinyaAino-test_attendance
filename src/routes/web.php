@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BreakTimeController;
+use App\Http\Controllers\AttendanceListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/attendance/break/end', [BreakTimeController::class, 'end'])
         ->name('break.end');
+
+    // 勤怠一覧（一般ユーザー）
+    Route::get('/attendance/list', [AttendanceListController::class, 'index'])
+        ->name('attendance.list');
+
+    // 勤怠詳細
+    Route::get('/attendance/detail/{id}', [AttendanceListController::class, 'detail'])
+        ->name('attendance.detail');
 });
 // Route::get('/admin', function () {
 //     return '管理者画面';

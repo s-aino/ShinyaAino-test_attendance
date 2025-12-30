@@ -56,16 +56,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($attendances as $attendance)
                 @php
-                $hasWork = $attendance->clock_in !== null;
+                use Carbon\Carbon;
+
+                $start = $startOfMonth;
+                $end = $endOfMonth;
                 @endphp
 
+                @for ($date = $start->copy(); $date->lte($end); $date->addDay())
+                @php
+                $attendance = $attendanceMap->get($date->toDateString());
+                $hasWork = $attendance && $attendance->clock_in;
+                @endphp
                 <tr>
-                    {{-- 日付（06/01(木) 形式） --}}
+                    {{-- 日付 --}}
                     <td>
-                        {{ \Carbon\Carbon::parse($attendance->date)->format('m/d') }}
-                        ({{ \Carbon\Carbon::parse($attendance->date)->isoFormat('ddd') }})
+                        {{ $date->format('m/d') }}
+                        ({{ $date->isoFormat('ddd') }})
                     </td>
 
                     {{-- 出勤 --}}
@@ -75,12 +82,12 @@
 
                     {{-- 退勤 --}}
                     <td>
-                        {{ $attendance->clock_out ? $attendance->clock_out->format('H:i') : '' }}
+                        {{ ($attendance && $attendance->clock_out) ? $attendance->clock_out->format('H:i') : '' }}
                     </td>
 
-                    {{-- 休憩（hh:mm） --}}
+                    {{-- 休憩 --}}
                     <td>
-                        @if ($attendance->clock_out)
+                        @if ($attendance && $attendance->clock_out)
                         @php
                         $breakMinutes = $attendance->totalBreakMinutes();
                         $h = floor($breakMinutes / 60);
@@ -90,17 +97,26 @@
                         @endif
                     </td>
 
-                    {{-- 勤務合計（※ 後で実装、今は空白） --}}
-                    <td></td>
+                    {{-- 合計 --}}
+                    <td>
+                        @if ($attendance)
+                        @php $workMinutes = $attendance->totalWorkMinutes(); @endphp
+                        @if ($workMinutes !== null)
+                        {{ floor($workMinutes / 60) }}:{{ str_pad($workMinutes % 60, 2, '0', STR_PAD_LEFT) }}
+                        @endif
+                        @endif
+                    </td>
 
                     {{-- 詳細 --}}
                     <td>
+                        @if ($attendance)
                         <a href="{{ route('attendance.detail', $attendance->id) }}" class="detail-link">
                             詳細
                         </a>
+                        @endif
                     </td>
                 </tr>
-                @endforeach
+                @endfor
             </tbody>
         </table>
     </div>

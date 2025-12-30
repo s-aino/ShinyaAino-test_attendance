@@ -24,7 +24,7 @@ class BreakTimeController extends Controller
 
         // 出勤していない or すでに休憩中
         if (! $attendance) {
-            return back()->withErrors(['break' => '出勤していません。']);
+            return back();
         }
 
         $onBreak = BreakTime::where('attendance_id', $attendance->id)
@@ -32,15 +32,17 @@ class BreakTimeController extends Controller
             ->exists();
 
         if ($onBreak) {
-            return back()->withErrors(['break' => 'すでに休憩中です。']);
+            return back();
         }
 
+
+        // 休憩に入る
         BreakTime::create([
             'attendance_id' => $attendance->id,
             'break_start' => Carbon::now(),
         ]);
 
-        return back()->with('status', '休憩を開始しました。');
+        return back();
     }
 
     /**
@@ -56,7 +58,7 @@ class BreakTimeController extends Controller
             ->first();
 
         if (! $attendance) {
-            return back()->withErrors(['break' => '出勤していません。']);
+            return back();
         }
 
         $break = BreakTime::where('attendance_id', $attendance->id)
@@ -64,13 +66,14 @@ class BreakTimeController extends Controller
             ->first();
 
         if (! $break) {
-            return back()->withErrors(['break' => '休憩中ではありません。']);
+            return back();
         }
 
+        // 休憩から戻る
         $break->update([
             'break_end' => Carbon::now(),
         ]);
 
-        return back()->with('status', '休憩を終了しました。');
+        return back();
     }
 }
