@@ -105,3 +105,121 @@
     color: #000000;
     letter-spacing: 0.05em;
 }
+
+/* =========================
+   勤怠一覧：全体
+   ========================= */
+   .attendance-list {
+    max-width: 900px;
+    margin: 40px auto;
+}
+/* =========================
+   勤怠一覧：月切り替え
+   ========================= */
+
+/* 外枠（白カード） */
+.attendance-list__month {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 14px 24px;
+    border-radius: 8px;
+    margin: 40px 0;
+}
+
+/* 前月・翌月（グレー文字） */
+.month-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.month-nav__text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #9e9e9e; 
+}
+
+/* 前月・翌月の矢印SVG */
+.month-nav svg {
+    width: 18px;
+    height: 18px;
+    fill: #9e9e9e;
+}
+
+/* ホバーしても色を変えない */
+.month-nav:hover .month-nav__text {
+    color: #9e9e9e;
+}
+
+/* =========================
+   今月
+   ========================= */
+
+.attendance-list__current-month {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* カレンダーアイコン */
+.attendance-list__current-month svg {
+    width: 20px;
+    height: 20px;
+    fill: #000000;
+}
+
+/* 今月（2025/12） の文字 */
+.attendance-list__current-month {
+    font-size: 18px; 
+    font-weight: bold;
+    color: #000000; 
+}
+/* テーブル */
+.attendance-table-wrapper {
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+.attendance-table thead {
+    background: #fff;
+}
+
+.attendance-table td {
+    color: #6e6e6e;
+    font-weight: 500;
+}
+
+.attendance-table th {
+    font-weight: normal;
+     font-weight: 500;
+    color: #9e9e9e;;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 12px 8px;
+}
+
+/* グレーの横線（見本どおり） */
+.attendance-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 詳細リンク */
+.detail-link {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
