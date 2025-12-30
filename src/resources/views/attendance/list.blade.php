@@ -109,11 +109,10 @@
 
                     {{-- 詳細 --}}
                     <td>
-                        @if ($attendance)
-                        <a href="{{ route('attendance.detail', $attendance->id) }}" class="detail-link">
+                        <a href="{{ route('attendance.detail', $attendance?->id ?? 0) }}"
+                            class="detail-link">
                             詳細
                         </a>
-                        @endif
                     </td>
                 </tr>
                 @endfor

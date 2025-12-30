@@ -33,7 +33,7 @@ class AttendanceListController extends Controller
             ->keyBy(function ($attendance) {
                 return $attendance->date->toDateString();
             });
-            
+
         return view('attendance.list', [
             'attendanceMap' => $attendanceMap,
             'currentMonth'  => $month,
@@ -43,11 +43,25 @@ class AttendanceListController extends Controller
     }
     public function detail($id)
     {
+        $user = Auth::user();
+
         $attendance = Attendance::with('breaks')
             ->where('id', $id)
-            ->where('user_id', auth()->id()) // 自分の勤怠だけ
-            ->firstOrFail();
+            ->where('user_id', $user->id)
+            ->first();
 
-        return view('attendance.detail', compact('attendance'));
+        // 出勤データがない日
+        if (!$attendance) {
+            return view('attendance.show', [
+                'attendance' => null,
+                'errorMessage' => 'その日は出勤していないため、修正できません。',
+            ]);
+        }
+
+        // 出勤データがある日
+        return view('attendance.show', [
+            'attendance' => $attendance,
+            'errorMessage' => null,
+        ]);
     }
 }
