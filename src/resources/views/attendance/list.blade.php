@@ -10,8 +10,9 @@
 <div class="attendance-list">
 
     {{-- タイトル --}}
-    <h2 class="page-title">勤怠一覧</h2>
-
+    <div class="page-title-wrap">
+        <h2 class="page-title">勤怠一覧</h2>
+    </div>
     {{-- 月切り替え --}}
     <div class="attendance-list__month">
 
@@ -109,10 +110,16 @@
 
                     {{-- 詳細 --}}
                     <td>
-                        <a href="{{ route('attendance.detail', $attendance?->id ?? 0) }}"
+                        @if($attendance)
+                        <a href="{{ route('attendance.show', $attendance->id) }}"
                             class="detail-link">
                             詳細
                         </a>
+                        @else
+                        <span class="detail-link is-disabled">
+                            詳細
+                        </span>
+                        @endif
                     </td>
                 </tr>
                 @endfor

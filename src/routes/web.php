@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BreakTimeController;
 use App\Http\Controllers\AttendanceListController;
+use App\Http\Controllers\AttendanceCorrectionRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +51,14 @@ Route::middleware(['auth'])->group(function () {
         ->name('attendance.list');
 
     // 勤怠詳細
-    Route::get('/attendance/detail/{id}', [AttendanceListController::class, 'detail'])
-        ->name('attendance.detail');
+    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show'])
+        ->name('attendance.show');
+
+     //  勤怠の修正申請を登録  
+    Route::post(
+        '/attendance/{attendance}/correction',
+        [AttendanceCorrectionRequestController::class, 'store']
+    )->name('attendance.correction.store');
 });
 // Route::get('/admin', function () {
 //     return '管理者画面';

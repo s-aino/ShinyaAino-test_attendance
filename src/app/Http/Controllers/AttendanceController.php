@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\AttendanceCorrection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -97,5 +98,55 @@ class AttendanceController extends Controller
         ]);
 
         return back();
+    }
+
+    public function show($id)
+    {
+        $user = Auth::user();
+
+        $attendance = Attendance::with(['breaks', 'correctionRequests'])
+            ->where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        // 勤務していない日
+        if (! $attendance) {
+            return view('attendance.show', [
+                'attendance' => null,
+                'isPending' => false,
+                'displayData' => null,
+                'notWorked' => true,
+            ]);
+        }
+
+        $latestCorrection = $attendance->correctionRequests()
+            ->latest()
+            ->first();
+
+        $isPending = $latestCorrection && $latestCorrection->status === 'pending';
+
+        // 表示用データをここで一本化
+        if ($isPending) {
+            $displayData = $latestCorrection->requested_data;
+        } else {
+            $displayData = [
+                'clock_in'  => optional($attendance->clock_in)->format('H:i'),
+                'clock_out' => optional($attendance->clock_out)->format('H:i'),
+                'breaks'    => $attendance->breaks->map(function ($break) {
+                    return [
+                        'start' => optional($break->break_start)->format('H:i'),
+                        'end'   => optional($break->break_end)->format('H:i'),
+                    ];
+                })->toArray(),
+                'reason' => '',
+            ];
+        }
+
+        return view('attendance.show', [
+            'attendance'  => $attendance,
+            'isPending'   => $isPending,
+            'displayData' => $displayData,
+            'notWorked'   => false,
+        ]);
     }
 }

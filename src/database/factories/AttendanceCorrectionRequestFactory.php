@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\AttendanceCorrectionRequest;
+use App\Models\AttendanceCorrection;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AttendanceCorrectionRequestFactory extends Factory
 {
-    protected $model = AttendanceCorrectionRequest::class;
+    protected $model = AttendanceCorrection::class;
 
     public function definition(): array
     {

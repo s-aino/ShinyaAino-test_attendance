@@ -44,12 +44,9 @@ Google スプレッドシートの「テーブル仕様書」を Markdown 形式
 | カラム名                | 型               | PK | UK | NN | FK              | 説明                     |
 | ------------------- | --------------- | -- | -- | -- | --------------- | ---------------------- |
 | id                  | unsigned bigint | ○  |    | ○  |                 | 修正申請ID                 |
-| attendance_id       | unsigned bigint |    |    | ○  | attendances(id) | 対象勤怠                   |
+| attendance_id       | unsigned bigint |    |    |    | attendances(id) | 対象勤怠                   |
 | user_id             | unsigned bigint |    |    | ○  | users(id)       | 申請者                    |
-| requested_clock_in  | time            |    |    | ○  |                 | 修正後の出勤時刻               |
-| requested_clock_out | time            |    |    | ○  |                 | 修正後の退勤時刻               |
-| requested_breaks    | json            |    |    | ○  |                 | 修正後の休憩情報               |
-| reason              | text            |    |    | ○  |                 | 修正理由                   |
+| requested_data    | json            |    |    | ○  |                 | 修正後の情報               |
 | status              | string          |    |    | ○  |                 | 状態（pending / approved） |
 | created_at          | timestamp       |    |    | ○  |                 | 申請日時                   |
 | updated_at          | timestamp       |    |    | ○  |                 | 承認日時                   |

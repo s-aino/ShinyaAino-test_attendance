@@ -109,10 +109,11 @@
 /* =========================
    勤怠一覧：全体
    ========================= */
-   .attendance-list {
+.attendance-list {
     max-width: 900px;
     margin: 40px auto;
 }
+
 /* =========================
    勤怠一覧：月切り替え
    ========================= */
@@ -139,7 +140,7 @@
 .month-nav__text {
     font-size: 14px;
     font-weight: 600;
-    color: #9e9e9e; 
+    color: #9e9e9e;
 }
 
 /* 前月・翌月の矢印SVG */
@@ -173,10 +174,11 @@
 
 /* 今月（2025/12） の文字 */
 .attendance-list__current-month {
-    font-size: 18px; 
+    font-size: 18px;
     font-weight: bold;
-    color: #000000; 
+    color: #000000;
 }
+
 /* テーブル */
 .attendance-table-wrapper {
     background: #fff;
@@ -205,8 +207,9 @@
 
 .attendance-table th {
     font-weight: normal;
-     font-weight: 500;
-    color: #9e9e9e;;
+    font-weight: 500;
+    color: #9e9e9e;
+    ;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -225,4 +228,203 @@
     font-weight: bold;
     color: #000;
     text-decoration: none;
+}
+
+
+/* エラーメッセージの位置 */
+.error-area {
+    min-height: 1.5em;
+}
+
+
+
+
+.detail-link {
+    color: #000;
+    font-weight: 500;
+}
+
+/* 一覧の詳細ボタン文字色薄く */
+.detail-link.is-disabled {
+    color: #aaa;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
+/* =========================
+   勤怠詳細ページ
+   ========================= */
+.attendance-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-detail-table {
+    width: 100%;
+    max-width: 860px;
+    border-collapse: collapse;
+
+    margin: 0 auto;
+}
+
+.attendance-detail-table th,
+.attendance-detail-table td {
+    padding: 16px 8px;
+    vertical-align: middle;
+}
+
+.attendance-detail-table th {
+    width: 140px;
+    text-align: left;
+    color: #666;
+    font-weight: normal;
+    padding: 18px 0;
+}
+
+.attendance-detail-table td {
+    font-weight: 500;
+    color: #222;
+    padding: 18px 0;
+}
+
+
+.attendance-detail-table tr {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.attendance-detail-table tr:last-child {
+    border-bottom: none;
+}
+
+
+.attendance-detail-table td.value {
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: #222;
+    padding-left: 32px;
+}
+
+.attendance-detail-table .value-text {
+    text-align: left;
+    /* 名前専用 */
+    display: inline-block;
+    margin-left: 106px;
+}
+
+.attendance-detail-table th.label {
+    width: 160px;
+    color: #666;
+    font-weight: normal;
+    padding-left: 24px;
+    font-weight: normal;
+}
+
+.date-block {
+    display: inline-flex;
+    grid-auto-flow: column;
+    gap: 136px;
+    align-items: center;
+    /* 各列の中央 */
+    margin-left: 106px;
+}
+
+.date-block span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+
+/* 時間入力欄 */
+.time-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 36px;
+    margin-left: 80px;
+    margin-top: 20px;
+}
+
+.time-input {
+    width: 100px;
+    padding: 6px 0;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #222;
+}
+
+/* 承認待ち表示 */
+.time-input.is-readonly {
+    border: none;
+    background: transparent;
+    pointer-events: none;
+}
+
+.reason-textarea {
+    width: calc(100px * 2 + 90px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+    margin-left: 80px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.reason-textarea[disabled] {
+    border: none;
+    background: transparent;
+}
+
+/* 右寄せ黒い申請ボタン */
+.attendance-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+    text-align: right;
+    /* max-width: 560px; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 修正ボタン（勤怠詳細） */
+.btn-fix {
+    min-width: 120px;
+    /* ← 見本くらいに */
+    padding: 10px 0;
+    font-size: 16px;
+    border-radius: 6px;
+}
+
+/* 黒ボタン */
+.btn--black {
+    background: #000;
+    color: #fff;
+}
+
+.btn--black:hover {
+    opacity: 0.85;
+}
+
+/* 承認待ちのため修正できません */
+.attendance-message {
+    margin-left: auto;
+    text-align: right;
+    color: #e60000;
+    font-size: 18px;
+}
+
+/* バリデーションエラー */
+.form-error {
+    color: #e60000;
+    font-size: 13px;
+    margin-top: 4px;
 }

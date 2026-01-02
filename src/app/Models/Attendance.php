@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AttendanceCorrection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -63,6 +64,6 @@ class Attendance extends Model
     // 勤怠は複数の修正申請を持つ（履歴として）
     public function correctionRequests()
     {
-        return $this->hasMany(AttendanceCorrectionRequest::class);
+        return $this->hasMany(AttendanceCorrection::class);
     }
 }

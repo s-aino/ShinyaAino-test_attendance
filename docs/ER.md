@@ -37,10 +37,7 @@ attendance_correction_requests {
   bigint id PK
   bigint attendance_id FK
   bigint user_id FK
-  time requested_clock_in
-  time requested_clock_out
-  json requested_breaks
-  text reason
+  json requested_data
   string status
   timestamp created_at
   timestamp updated_at

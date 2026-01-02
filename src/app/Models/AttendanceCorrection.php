@@ -1,24 +1,26 @@
 <?php
 
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AttendanceCorrectionRequest extends Model
+class AttendanceCorrection extends Model
 {
     use HasFactory;
+
+    protected $table = 'attendance_correction_requests';
+
 
     protected $fillable = [
         'attendance_id',
         'user_id',
-        'requested_clock_in',
-        'requested_clock_out',
-        'requested_breaks',
-        'reason',
+        'requested_data',
         'status',
     ];
 
     protected $casts = [
-        'requested_breaks' => 'array',
+        'requested_data' => 'array',
     ];
 
     // 修正申請は1つの勤怠に属する

@@ -9,6 +9,14 @@ body {
     /* 見本に近い薄グレー */
 }
 
+/* 共通コンテナ */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+
 /* =====================
    文字のフォント
 ===================== */
@@ -93,10 +101,15 @@ body {
 /* =====================
  <h2>ページタイトルの黒棒
 ===================== */
+.page-title-wrap {
+    padding-top: 28px;
+    padding-bottom: 38px;
+}
+
 .page-title {
     font-size: 24px;
     font-weight: bold;
     padding-left: 12px;
     border-left: 6px solid #000;
-    margin-bottom: 20px;
+    margin: 0;
 }
