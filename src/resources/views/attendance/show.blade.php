@@ -7,16 +7,7 @@
 @endpush
 
 @section('content')
-@if($notWorked)
-<div class="attendance-card">
-    <p class="text-danger">
-        この日は出勤していないため修正申請はできません。
-    </p>
-</div>
-@endsection
-@php return; @endphp
-@endif
-<div class="container">
+<div class="page-container">
 
     <div class="page-title-wrap">
         <h2 class="page-title">勤怠詳細</h2>

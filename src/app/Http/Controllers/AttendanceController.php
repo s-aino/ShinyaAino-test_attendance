@@ -111,12 +111,7 @@ class AttendanceController extends Controller
 
         // 勤務していない日
         if (! $attendance) {
-            return view('attendance.show', [
-                'attendance' => null,
-                'isPending' => false,
-                'displayData' => null,
-                'notWorked' => true,
-            ]);
+            abort(404);
         }
 
         $latestCorrection = $attendance->correctionRequests()
@@ -146,7 +141,6 @@ class AttendanceController extends Controller
             'attendance'  => $attendance,
             'isPending'   => $isPending,
             'displayData' => $displayData,
-            'notWorked'   => false,
         ]);
     }
 }

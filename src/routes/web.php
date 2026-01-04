@@ -54,11 +54,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show'])
         ->name('attendance.show');
 
-     //  勤怠の修正申請を登録  
+    //  勤怠の修正申請を登録  
     Route::post(
         '/attendance/{attendance}/correction',
         [AttendanceCorrectionRequestController::class, 'store']
     )->name('attendance.correction.store');
+
+    //  申請一覧
+    Route::get(
+        '/stamp_correction_request/list',
+        [AttendanceCorrectionRequestController::class, 'index']
+    )->name('correction_requests.index');
 });
 // Route::get('/admin', function () {
 //     return '管理者画面';

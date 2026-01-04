@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div class="attendance-list">
+<div class="page-container">
 
     {{-- タイトル --}}
     <div class="page-title-wrap">

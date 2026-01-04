@@ -1,14 +1,21 @@
-.attendance-container {
-    min-height: calc(100vh - 80px);
-    /* ヘッダー分を除外 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* attendance 共通レイアウト */
+.page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
 }
+
 
 /* =========================
    状態ラベル（上のグレー）
 ========================= */
+.attendance-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* ← 横方向の基準 */
+}
+
 .attendance-status {
     display: inline-block;
     padding: 6px 16px;
@@ -17,7 +24,7 @@
     font-size: 14px;
     border-radius: 999px;
     margin-top: 160px;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
 /* =========================
@@ -27,7 +34,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    /* gap: 20px; */
+    text-align: center;
+    /* margin-bottom: 12px; */
 }
 
 .attendance-time p {
@@ -64,7 +73,7 @@
     justify-content: center;
     gap: 60px;
     /* ボタン間の余白 */
-    margin-top: 70px;
+    margin-top: 60px;
     /* 時計との余白 */
 }
 
@@ -106,13 +115,6 @@
     letter-spacing: 0.05em;
 }
 
-/* =========================
-   勤怠一覧：全体
-   ========================= */
-.attendance-list {
-    max-width: 900px;
-    margin: 40px auto;
-}
 
 /* =========================
    勤怠一覧：月切り替え
@@ -237,13 +239,6 @@
 }
 
 
-
-
-.detail-link {
-    color: #000;
-    font-weight: 500;
-}
-
 /* 一覧の詳細ボタン文字色薄く */
 .detail-link.is-disabled {
     color: #aaa;
@@ -258,13 +253,13 @@
 .attendance-card {
     background: #ffffff;
     border-radius: 8px;
-    padding: 32px;
+    /* padding: 32px; */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .attendance-detail-table {
     width: 100%;
-    max-width: 860px;
+    max-width: 900px;
     border-collapse: collapse;
 
     margin: 0 auto;
@@ -427,4 +422,100 @@
     color: #e60000;
     font-size: 13px;
     margin-top: 4px;
+}
+
+/* =========================
+   申請一覧ページ
+   ========================= */
+/* タブ */
+.request-tabs-wrap {
+    border-bottom: 1px solid #000;
+    margin-bottom: 24px;
+    /* 黒線 → テーブルの距離 */
+}
+
+.request-tabs {
+    display: flex;
+    gap: 68px;
+    padding-bottom: 12px;
+    margin-left: 36px;
+}
+
+
+/* 通常時 */
+.request-tabs a {
+    font-size: 15px;
+    color: #000;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 6px 0;
+    letter-spacing: 0.08em;
+    transition: opacity 0.15s ease;
+}
+
+/* ホバー時（控えめ） */
+.request-tabs a:hover {
+    opacity: 0.6;
+}
+
+/* 選択中 */
+.request-tabs a.active {
+    font-weight: 700;
+    opacity: 1;
+    pointer-events: none;
+    /* 選択中はクリック不可（任意） */
+}
+
+/* 申請一覧テーブル内 */
+.request-table {
+    width: 100%;
+    background: #fff;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+    color: #666;
+}
+
+.request-table th,
+.request-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e5e5e5;
+    /* ← 緑で示してた罫線 */
+    text-align: left;
+    vertical-align: top;
+}
+
+.request-table th {
+    font-weight: 600;
+    color: #666;
+}
+
+.request-table th.status-cell,
+.request-table td.status-cell {
+    text-align: center;
+}
+
+.request-table a {
+    color: #000;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.request-table a:hover {
+    text-decoration: underline;
+}
+
+/* 申請一覧の名前・理由短縮 */
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name-cell {
+    max-width: 80px;
+}
+
+.reason-cell {
+    max-width: 80px;
 }

@@ -4,17 +4,24 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: #f3f3f3;
-    /* 見本に近い薄グレー */
+
+/* =====================
+ <h2>ページタイトルの黒棒
+===================== */
+.page-title-wrap {
+    padding-top: 46px;
+    padding-bottom: 46px;
 }
 
-/* 共通コンテナ */
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 20px;
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 12px;
+    border-left: 6px solid #000;
+    margin: 0;
+    line-height: 1.4;
 }
+
 
 
 /* =====================
@@ -24,6 +31,8 @@ body {
     font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
         'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: #000;
+    background-color: #f3f3f3;
+    /* 見本に近い薄グレー */
 }
 
 /* =====================
@@ -96,20 +105,4 @@ body {
     .main {
         padding: 24px 0;
     }
-}
-
-/* =====================
- <h2>ページタイトルの黒棒
-===================== */
-.page-title-wrap {
-    padding-top: 28px;
-    padding-bottom: 38px;
-}
-
-.page-title {
-    font-size: 24px;
-    font-weight: bold;
-    padding-left: 12px;
-    border-left: 6px solid #000;
-    margin: 0;
 }
