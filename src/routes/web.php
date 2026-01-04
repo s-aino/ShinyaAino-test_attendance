@@ -1,52 +1,59 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\BreakTimeController;
 use App\Http\Controllers\AttendanceListController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
+use App\Http\Controllers\BreakTimeController;
 
 /*
 |--------------------------------------------------------------------------
-| Top
+| Guest Routes（未ログイン）
 |--------------------------------------------------------------------------
 */
 
+// ルートアクセス時はログインへ
 Route::get('/', function () {
     return redirect('/login');
 });
 
+// 管理者ログイン画面
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])
+    ->name('admin.login');
+
+// ログイン処理（全ユーザー共通）
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->name('login');
+
 /*
 |--------------------------------------------------------------------------
-| Dashboard（role 分岐）
+| Authenticated Routes（一般ユーザー）
 |--------------------------------------------------------------------------
 */
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-
-    if ($user->role === 'admin') {
-        return redirect('/admin');
-    }
-
-    return redirect('/attendance');
-})->middleware(['auth']);
 
 Route::middleware(['auth'])->group(function () {
 
-    // 勤怠登録画面（一般ユーザー）
+    // 勤怠登録画面
     Route::get('/attendance', [AttendanceController::class, 'index'])
         ->name('attendance.index');
+
     Route::post('/attendance/start', [AttendanceController::class, 'start'])
         ->name('attendance.start');
+
     Route::post('/attendance/end', [AttendanceController::class, 'end'])
         ->name('attendance.end');
+
+    // 休憩
     Route::post('/attendance/break/start', [BreakTimeController::class, 'start'])
         ->name('break.start');
 
     Route::post('/attendance/break/end', [BreakTimeController::class, 'end'])
         ->name('break.end');
 
-    // 勤怠一覧（一般ユーザー）
+    // 勤怠一覧
     Route::get('/attendance/list', [AttendanceListController::class, 'index'])
         ->name('attendance.list');
 
@@ -54,18 +61,28 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show'])
         ->name('attendance.show');
 
-    //  勤怠の修正申請を登録  
-    Route::post(
-        '/attendance/{attendance}/correction',
-        [AttendanceCorrectionRequestController::class, 'store']
-    )->name('attendance.correction.store');
+    // 修正申請
+    Route::post('/attendance/{attendance}/correction', [AttendanceCorrectionRequestController::class, 'store'])
+        ->name('attendance.correction.store');
 
-    //  申請一覧
-    Route::get(
-        '/stamp_correction_request/list',
-        [AttendanceCorrectionRequestController::class, 'index']
-    )->name('correction_requests.index');
+    // 申請一覧
+    Route::get('/stamp_correction_request/list', [AttendanceCorrectionRequestController::class, 'index'])
+        ->name('correction_requests.index');
 });
-// Route::get('/admin', function () {
-//     return '管理者画面';
-// })->middleware(['auth']);
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes（管理者専用）
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])
+            ->name('admin.attendance.list');
+
+        Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])
+            ->name('admin.attendance.show');
+    });
