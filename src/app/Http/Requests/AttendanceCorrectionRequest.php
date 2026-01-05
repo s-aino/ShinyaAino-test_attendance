@@ -71,14 +71,19 @@ class AttendanceCorrectionRequest extends FormRequest
                     );
                 }
 
-                // ③ 出勤前 or 退勤後の休憩禁止
-                if (
-                    ($clockIn && $start < $clockIn) ||
-                    ($clockOut && $end > $clockOut)
-                ) {
+                // ③-1 出勤前の休憩は禁止
+                if ($clockIn && $start < $clockIn) {
                     $validator->errors()->add(
                         "breaks.$i.start",
                         '休憩時間が不適切な値です'
+                    );
+                }
+
+                // ③-2 退勤後の休憩は禁止
+                if ($clockOut && $end > $clockOut) {
+                    $validator->errors()->add(
+                        "breaks.$i.end",
+                        '休憩時間もしくは退勤時間が不適切な値です'
                     );
                 }
             }

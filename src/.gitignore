@@ -39,3 +39,6 @@ yarn-error.log
 
 # Composer cache
 /.composer
+
+
+src/.config/psysh/psysh_history
