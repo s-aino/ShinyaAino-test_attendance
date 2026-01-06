@@ -3,6 +3,7 @@
 @section('title', '勤怠一覧')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/attendance-common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 @endpush
 
@@ -45,71 +46,51 @@
 
     {{-- 一覧テーブル --}}
     <div class="attendance-table-wrapper">
-        <table class="attendance-table">
+        <table class="attendance-table list-table">
             <thead>
                 <tr>
-                    <th>日付</th>
-                    <th>出勤</th>
-                    <th>退勤</th>
-                    <th>休憩</th>
-                    <th>合計</th>
-                    <th>詳細</th>
+                    <th class="col-date">日付</th>
+                    <th class="col-time">出勤</th>
+                    <th class="col-time">退勤</th>
+                    <th class="col-time">休憩</th>
+                    <th class="col-total">合計</th>
+                    <th class="col-detail">詳細</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($rows as $row)
                 @php
-                use Carbon\Carbon;
-
-                $start = $startOfMonth;
-                $end = $endOfMonth;
-                @endphp
-
-                @for ($date = $start->copy(); $date->lte($end); $date->addDay())
-                @php
-                $attendance = $attendanceMap->get($date->toDateString());
-                $hasWork = $attendance && $attendance->clock_in;
+                $attendance = $row['attendance'];
                 @endphp
                 <tr>
                     {{-- 日付 --}}
-                    <td>
-                        {{ $date->format('m/d') }}
-                        ({{ $date->isoFormat('ddd') }})
+                    <td class="col-date">
+                        {{ $row['date']->format('m/d') }}
+                        ({{ $row['date']->isoFormat('ddd') }})
                     </td>
 
                     {{-- 出勤 --}}
-                    <td>
-                        {{ $hasWork ? $attendance->clock_in->format('H:i') : '' }}
+                    <td class="col-time">
+                        {{ $attendance?->clockInFormatted() }}
                     </td>
 
                     {{-- 退勤 --}}
-                    <td>
-                        {{ ($attendance && $attendance->clock_out) ? $attendance->clock_out->format('H:i') : '' }}
+                    <td class="col-time">
+                        {{ $attendance?->clockOutFormatted() }}
                     </td>
 
                     {{-- 休憩 --}}
-                    <td>
-                        @if ($attendance && $attendance->clock_out)
-                        @php
-                        $breakMinutes = $attendance->totalBreakMinutes();
-                        $h = floor($breakMinutes / 60);
-                        $m = $breakMinutes % 60;
-                        @endphp
-                        {{ sprintf('%d:%02d', $h, $m) }}
-                        @endif
+                    <td class="col-time">
+                        {{ $attendance?->breakTimeFormatted() }}
                     </td>
 
                     {{-- 合計 --}}
-                    <td>
-                        @if ($attendance)
-                        @php $workMinutes = $attendance->totalWorkMinutes(); @endphp
-                        @if ($workMinutes !== null)
-                        {{ floor($workMinutes / 60) }}:{{ str_pad($workMinutes % 60, 2, '0', STR_PAD_LEFT) }}
-                        @endif
-                        @endif
+                    <td class="col-time">
+                        {{ $attendance?->workTimeFormatted() }}
                     </td>
 
                     {{-- 詳細 --}}
-                    <td>
+                    <td class="col-detail">
                         @if($attendance)
                         <a href="{{ route('attendance.show', $attendance->id) }}"
                             class="detail-link">
@@ -122,7 +103,7 @@
                         @endif
                     </td>
                 </tr>
-                @endfor
+                @endforeach
             </tbody>
         </table>
     </div>

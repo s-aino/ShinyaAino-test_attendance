@@ -3,6 +3,7 @@
 @section('title', '勤怠詳細')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/attendance-common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 @endpush
 
@@ -76,31 +77,8 @@
                     </tr>
 
                     {{-- 休憩（既存 + 1） --}}
-                    @php
-                    $MAX_BREAKS = 5;
-
-                    /**
-                    * 実際に入力されている休憩のみカウント
-                    */
-                    $breaks = collect($displayData['breaks'])->filter(function ($b) {
-                    return !empty($b['start']) || !empty($b['end']);
-                    })->values();
-
-                    $breakCount = $breaks->count();
-
-                    /**
-                    * 表示数の決定
-                    * 申請前 : 実休憩 + 1（最大5）
-                    * 申請中 : 実休憩のみ
-                    */
-                    $rows = $isPending
-                    ? min($breakCount, $MAX_BREAKS)
-                    : min($breakCount + 1, $MAX_BREAKS);
-                    @endphp
-
-                    @for ($i = 0; $i < $rows; $i++)
-                        @php $break=$breaks[$i] ?? null; @endphp
-                        <tr>
+                    @foreach ($breakRows as $i => $break)
+                    <tr>
                         <th class="label">{{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}</th>
                         <td class="value">
                             <div class="time-row">
@@ -124,26 +102,26 @@
                                 @error("breaks.$i.end") <p class="form-error">{{ $message }}</p> @enderror
                             </div>
                         </td>
-                        </tr>
-                        @endfor
+                    </tr>
+                    @endforeach
 
-                        {{-- 備考 --}}
-                        <tr>
-                            <th class="label">備考</th>
-                            <td class="value">
-                                <textarea
-                                    name="reason"
-                                    class="reason-textarea"
-                                    rows="2"
-                                    {{ $isPending ? 'disabled' : '' }}>{{ old('reason', $displayData['reason']) }}</textarea>
+                    {{-- 備考 --}}
+                    <tr>
+                        <th class="label">備考</th>
+                        <td class="value">
+                            <textarea
+                                name="reason"
+                                class="reason-textarea"
+                                rows="2"
+                                {{ $isPending ? 'disabled' : '' }}>{{ old('reason', $displayData['reason']) }}</textarea>
 
-                                <div class="error-area">
-                                    @error('reason')
-                                    <p class="form-error">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </td>
-                        </tr>
+                            <div class="error-area">
+                                @error('reason')
+                                <p class="form-error">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>

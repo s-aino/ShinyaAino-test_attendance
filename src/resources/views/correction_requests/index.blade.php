@@ -3,6 +3,7 @@
 @section('title', '申請一覧')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/attendance-common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 @endpush
 
@@ -27,15 +28,15 @@
     </div>
 
 
-    <table class="request-table">
+    <table class="request-table list-table">
         <thead>
             <tr>
                 <th class="status-cell">状態</th>
-                <th>名前</th>
-                <th>対象日時</th>
-                <th>申請理由</th>
-                <th>申請日時</th>
-                <th>詳細</th>
+                <th class="name-cell">名前</th>
+                <th class="date-cell">対象日時</th>
+                <th class="reason-cell">申請理由</th>
+                <th class="created-cell">申請日時</th>
+                <th class="detail-cell">詳細</th>
             </tr>
         </thead>
 
@@ -46,19 +47,20 @@
                     {{ $request->status === 'pending' ? '承認待ち' : '承認済み' }}
                 </td>
 
-                <td class="truncate name-cell">{{ $request->attendance->user->name }}</td>
-                <td>
+                <td class="name-cell truncate">{{ $request->attendance->user->name }}</td>
+                <td class="date-cell">
+
                     {{ \Carbon\Carbon::parse($request->attendance->date)->format('Y/m/d') }}
                 </td>
 
-                <td class="truncate reason-cell">
+                <td class="reason-cell truncate">
                     {{ $request->requested_data['reason'] ?? '' }}
                 </td>
-                <td>
+                 <td class="created-cell">
                     {{ $request->created_at->format('Y/m/d') }}
                 </td>
 
-                <td>
+               <td class="detail-cell">
                     <a href="{{ route('attendance.show', $request->attendance_id) }}">
                         詳細
                     </a>

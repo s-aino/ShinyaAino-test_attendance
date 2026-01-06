@@ -3,6 +3,7 @@
 @section('title', '勤怠登録')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/attendance-common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 @endpush
 

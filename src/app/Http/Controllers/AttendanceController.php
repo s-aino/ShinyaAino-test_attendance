@@ -109,6 +109,7 @@ class AttendanceController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
+
         // 勤務していない日
         if (! $attendance) {
             abort(404);
@@ -119,6 +120,10 @@ class AttendanceController extends Controller
             ->first();
 
         $isPending = $latestCorrection && $latestCorrection->status === 'pending';
+
+        $breakRows = $attendance
+            ? $attendance->breaksForDisplay($isPending)
+            : collect();
 
         // 表示用データをここで一本化
         if ($isPending) {
@@ -141,6 +146,7 @@ class AttendanceController extends Controller
             'attendance'  => $attendance,
             'isPending'   => $isPending,
             'displayData' => $displayData,
+            'breakRows'  => $breakRows,
         ]);
     }
 }

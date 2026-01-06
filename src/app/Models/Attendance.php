@@ -36,6 +36,19 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
 
+    /* =====================
+     * 基本判定
+     * ===================== */
+
+    public function hasWorked(): bool
+    {
+        return !is_null($this->clock_in);
+    }
+
+    public function hasFinished(): bool
+    {
+        return !is_null($this->clock_out);
+    }
 
     // 休憩合計（分）
     public function totalBreakMinutes(): int
@@ -65,5 +78,63 @@ class Attendance extends Model
     public function correctionRequests()
     {
         return $this->hasMany(AttendanceCorrection::class);
+    }
+
+    /* =====================
+     * 表示用（← ここが重要）
+     * ===================== */
+
+    public function breakTimeFormatted(): string
+    {
+        if (!$this->hasFinished()) {
+            return '';
+        }
+
+        $minutes = $this->totalBreakMinutes();
+        return sprintf('%d:%02d', floor($minutes / 60), $minutes % 60);
+    }
+
+    public function workTimeFormatted(): string
+    {
+        $minutes = $this->totalWorkMinutes();
+        if ($minutes === null) {
+            return '';
+        }
+
+        return sprintf('%d:%02d', floor($minutes / 60), $minutes % 60);
+    }
+
+    public function clockInFormatted(): string
+    {
+        return $this->clock_in?->format('H:i') ?? '';
+    }
+
+    public function clockOutFormatted(): string
+    {
+        return $this->clock_out?->format('H:i') ?? '';
+    }
+
+    // 表示用：休憩一覧（申請中なら空行を1つ足す）
+    public function breaksForDisplay(bool $isPending)
+    {
+        $breaks = $this->breaks()->orderBy('break_start')->get();
+
+        if ($isPending) {
+            $breaks->push(null); // 入力用の空行
+        }
+
+        return $breaks;
+    }
+
+    public function toDisplayArray(): array
+    {
+        return [
+            'clock_in' => $this->clockInFormatted(),
+            'clock_out' => $this->clockOutFormatted(),
+            'breaks' => $this->breaks->map(fn($b) => [
+                'start' => optional($b->break_start)->format('H:i'),
+                'end'   => optional($b->break_end)->format('H:i'),
+            ])->toArray(),
+        ];
     }
 }

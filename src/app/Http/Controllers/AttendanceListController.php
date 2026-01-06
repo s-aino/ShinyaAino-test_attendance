@@ -30,15 +30,20 @@ class AttendanceListController extends Controller
             ])
             ->orderBy('date', 'asc')
             ->get()
-            ->keyBy(function ($attendance) {
-                return $attendance->date->toDateString();
-            });
+            ->keyBy(fn($attendance) => $attendance->date->toDateString());
+
+        $rows = collect();
+
+        for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
+            $rows->push([
+                'date'       => $date->copy(),
+                'attendance' => $attendanceMap->get($date->toDateString()),
+            ]);
+        }
 
         return view('attendance.list', [
-            'attendanceMap' => $attendanceMap,
-            'currentMonth'  => $month,
-            'startOfMonth'  => $startOfMonth,
-            'endOfMonth'    => $endOfMonth,
+            'rows'        => $rows,
+            'currentMonth' => $month,
         ]);
     }
     public function detail($id)
