@@ -109,26 +109,29 @@ class AttendanceController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
-
         // 勤務していない日
-        if (! $attendance) {
+        if (!$attendance) {
             abort(404);
         }
 
+        // 最新の修正申請
         $latestCorrection = $attendance->correctionRequests()
             ->latest()
             ->first();
 
+        // 承認待ちかどうか
         $isPending = $latestCorrection && $latestCorrection->status === 'pending';
 
-        $breakRows = $attendance
-            ? $attendance->breaksForDisplay($isPending)
-            : collect();
-
-        // 表示用データをここで一本化
+        /*
+    |--------------------------------------------------------------------------
+    | 表示用データを先に確定させる（唯一の元データ）
+    |--------------------------------------------------------------------------
+    */
         if ($isPending) {
+            // 承認待ち：申請データをそのまま表示
             $displayData = $latestCorrection->requested_data;
         } else {
+            // 通常：実データ
             $displayData = [
                 'clock_in'  => optional($attendance->clock_in)->format('H:i'),
                 'clock_out' => optional($attendance->clock_out)->format('H:i'),
@@ -138,15 +141,46 @@ class AttendanceController extends Controller
                         'end'   => optional($break->break_end)->format('H:i'),
                     ];
                 })->toArray(),
-                'reason' => '',
+                'reason' => $attendance->reason ?? '',
             ];
         }
 
+        /*
+    |--------------------------------------------------------------------------
+    | 休憩表示用の行（breakRows）を作る
+    | Blade は breakRows だけを見る
+    |--------------------------------------------------------------------------
+    */
+
+        // ① まず breaks を collection に
+        $breakRows = collect($displayData['breaks'] ?? [])
+            // ② 「完全に空の行（予備行）」を除外（過去データ対策）
+            ->filter(function ($break) {
+                return !(
+                    empty($break['start']) &&
+                    empty($break['end'])
+                );
+            })
+            ->values();
+
+        // ③ 通常時のみ「予備 1 行」を追加
+        if (!$isPending) {
+            $breakRows->push([
+                'start' => '',
+                'end'   => '',
+            ]);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | View へ
+    |--------------------------------------------------------------------------
+    */
         return view('attendance.show', [
             'attendance'  => $attendance,
             'isPending'   => $isPending,
             'displayData' => $displayData,
-            'breakRows'  => $breakRows,
+            'breakRows'   => $breakRows,
         ]);
     }
 }

@@ -29,26 +29,17 @@ class AttendanceController extends Controller
     }
     public function show($id)
     {
-        $attendance = Attendance::with([
-            'user',
-            'breaks',
-            'correctionRequests',
-        ])->findOrFail($id);
+        $attendance = Attendance::with(['user', 'breaks', 'correctionRequests'])
+            ->findOrFail($id);
 
-        // 管理者でも、申請中があれば編集不可
+        // 管理者でも申請中があれば編集不可
         $hasPendingRequest = $attendance->correctionRequests()
             ->where('status', 'pending')
             ->exists();
 
-        // 管理者用の isPending 的フラグ
         $isPending = $hasPendingRequest;
 
-        // ★ ここが重要：一般ユーザーと同じ作り方
-        $breakRows = $attendance
-            ? $attendance->breaksForDisplay($isPending)
-            : collect();
-
-        // 表示データも一般ユーザーと揃える
+        // 表示データを先に確定
         if ($isPending) {
             $latestCorrection = $attendance->correctionRequests()
                 ->latest()
@@ -69,11 +60,32 @@ class AttendanceController extends Controller
             ];
         }
 
+        // breakRows は displayData から作る
+
+        // ① まず breaks を collection に
+        $breakRows = collect($displayData['breaks'] ?? [])
+            // ② 「完全に空の行（予備行）」を除外（過去データ対策）
+            ->filter(function ($break) {
+                return !(
+                    empty($break['start']) &&
+                    empty($break['end'])
+                );
+            })
+            ->values();
+
+        // ③ 通常時のみ「予備 1 行」を追加
+        if (!$isPending) {
+            $breakRows->push([
+                'start' => '',
+                'end'   => '',
+            ]);
+        }
         return view('admin.attendance.show', [
             'attendance'        => $attendance,
             'displayData'       => $displayData,
             'breakRows'         => $breakRows,
             'hasPendingRequest' => $hasPendingRequest,
+            'isPending'         => $isPending,
         ]);
     }
 
