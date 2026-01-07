@@ -85,4 +85,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/attendance/{id}', [AdminAttendanceController::class, 'show'])
             ->name('admin.attendance.show');
+
+        Route::put('/attendance/{id}', [AdminAttendanceController::class, 'update'])
+            ->name('admin.attendance.update');
     });

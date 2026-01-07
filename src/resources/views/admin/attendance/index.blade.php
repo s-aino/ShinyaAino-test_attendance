@@ -48,35 +48,35 @@
 
     {{-- 一覧テーブル --}}
     <div class="attendance-table-wrapper">
-        <table class="attendance-table">
+        <table class="attendance-table list-table">
             <thead>
                 <tr>
-                    <th>名前</th>
-                    <th>出勤</th>
-                    <th>退勤</th>
-                    <th>休憩</th>
-                    <th>合計</th>
-                    <th>詳細</th>
+                    <th class="col-name">名前</th>
+                    <th class="col-time">出勤</th>
+                    <th class="col-time">退勤</th>
+                    <th class="col-time">休憩</th>
+                    <th class="col-total">合計</th>
+                    <th class="col-detail">詳細</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($attendances as $attendance)
                 <tr>
                     {{-- 名前 --}}
-                    <td>{{ $attendance->user->name }}</td>
+                    <td class="col-name truncate">{{ $attendance->user->name }}</td>
 
                     {{-- 出勤 --}}
-                    <td>{{ $attendance->clockInFormatted() }}</td>
+                    <td class="col-time">{{ $attendance->clockInFormatted() }}</td>
                     {{-- 退勤 --}}
-                    <td>{{ $attendance->clockOutFormatted() }}</td>
+                    <td class="col-time">{{ $attendance->clockOutFormatted() }}</td>
                     {{-- 休憩 --}}
-                    <td>{{ $attendance->breakTimeFormatted() }}</td>
+                    <td class="col-time">{{ $attendance->breakTimeFormatted() }}</td>
 
                     {{-- 合計 --}}
-                    <td>{{ $attendance->workTimeFormatted() }}</td>
+                    <td class="col-total">{{ $attendance->workTimeFormatted() }}</td>
 
                     {{-- 詳細 --}}
-                    <td>
+                    <td class="col-detail">
                         <a href="{{ route('admin.attendance.show', $attendance->id) }}"
                             class="detail-link">
                             詳細
