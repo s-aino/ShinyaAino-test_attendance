@@ -20,6 +20,22 @@
     <main class="main">
         @yield('content')
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flash = document.querySelector('.flash-message');
+            if (!flash) return;
+
+            setTimeout(() => {
+                flash.classList.add('is-hidden');
+            }, 5000);
+
+            setTimeout(() => {
+                flash.remove();
+            }, 5800);
+        });
+    </script>
+
 </body>
 
 </html>

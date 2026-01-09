@@ -10,6 +10,14 @@
 @section('content')
 <div class="page-container">
 
+    {{-- 成功メッセージ --}}
+    @if (session('success'))
+    <div class="flash-message flash-message--success">
+        {{ session('success') }}
+    </div>
+    @endif
+
+
     <div class="page-title-wrap">
         <h2 class="page-title">勤怠詳細</h2>
     </div>
@@ -82,22 +90,32 @@
                     {{-- 休憩（既存 + 1） --}}
                     @foreach ($breakRows as $i => $break)
                     <tr>
-                        <th class="label">{{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}</th>
+                        <th class="label">
+                            {{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}
+                        </th>
+
                         <td class="value">
                             <div class="time-row">
                                 <input
                                     type="text"
                                     name="breaks[{{ $i }}][start]"
-                                    class="time-input {{ $hasPendingRequest ? 'is-readonly' : '' }}"
+                                    class="time-input {{ $isPending ? 'is-readonly' : '' }}"
                                     value="{{ old("breaks.$i.start", $break['start'] ?? '') }}"
-                                    {{ $hasPendingRequest ? 'disabled' : '' }}>
+                                    {{ $isPending ? 'readonly' : '' }}>
+
                                 <span class="time-sep">〜</span>
+
                                 <input
                                     type="text"
                                     name="breaks[{{ $i }}][end]"
-                                    class="time-input {{ $hasPendingRequest ? 'is-readonly' : '' }}"
+                                    class="time-input {{ $isPending ? 'is-readonly' : '' }}"
                                     value="{{ old("breaks.$i.end", $break['end'] ?? '') }}"
-                                    {{ $hasPendingRequest ? 'disabled' : '' }}>
+                                    {{ $isPending ? 'readonly' : '' }}>
+                            </div>
+
+                            <div class="error-area">
+                                @error("breaks.$i.start") <p class="form-error">{{ $message }}</p> @enderror
+                                @error("breaks.$i.end") <p class="form-error">{{ $message }}</p> @enderror
                             </div>
                         </td>
                     </tr>
@@ -131,7 +149,7 @@
             *承認待ちのため修正はできません。
         </p>
         @else
-        <button type="submit" form="attendance-correction-form" class="btn btn--black btn-fix">修正</button>
+        <button type="submit" form="attendance-admin-update-form" class="btn btn--black btn-fix">修正</button>
         @endif
     </div>
 

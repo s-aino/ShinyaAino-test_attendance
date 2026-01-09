@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\AttendanceApprovalRequest;
 
 class AttendanceController extends Controller
 {
@@ -89,45 +90,73 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(
+        AttendanceApprovalRequest $request,
+        $id
+    ) {
+        // dd($request->all());
         $attendance = Attendance::with(['breaks', 'correctionRequests'])
             ->findOrFail($id);
 
-        // 申請中があれば管理者でも修正不可
-        $hasPendingRequest = $attendance->correctionRequests()
+        // 承認待ち申請
+        $pending = $attendance->correctionRequests()
             ->where('status', 'pending')
-            ->exists();
+            ->latest()
+            ->first();
 
-        if ($hasPendingRequest) {
-            return back()->withErrors([
-                'error' => '申請中のため修正できません。',
-            ]);
+        // ============================
+        // 更新データを決定（必ず validated）
+        // ============================
+        if ($pending) {
+            // 承認：申請データを request に流し直す
+            $request->merge($pending->requested_data);
+            $data = $request->validated();
+        } else {
+            // 管理者の直接修正
+            $data = $request->validated();
         }
 
-        DB::transaction(function () use ($request, $attendance) {
+        DB::transaction(function () use ($attendance, $data, $pending) {
 
+            // 勤怠本体
             $attendance->update([
-                'clock_in'  => $request->clock_in,
-                'clock_out' => $request->clock_out,
-                'reason'    => $request->reason,
+                'clock_in'  => $data['clock_in']  ?? null,
+                'clock_out' => $data['clock_out'] ?? null,
+                'reason'    => $data['reason']    ?? null,
             ]);
 
-            // 休憩は一度削除して再作成
+            // 休憩（全削除 → 再作成）
             $attendance->breaks()->delete();
 
-            foreach ($request->breaks ?? [] as $break) {
-                if ($break['start'] && $break['end']) {
-                    $attendance->breaks()->create([
-                        'break_start' => $break['start'],
-                        'break_end'   => $break['end'],
-                    ]);
+            $date = $attendance->date instanceof Carbon
+                ? $attendance->date->format('Y-m-d')
+                : $attendance->date;
+
+            foreach ($data['breaks'] ?? [] as $break) {
+
+                if (empty($break['start']) && empty($break['end'])) {
+                    continue;
                 }
+
+                $attendance->breaks()->create([
+                    'break_start' => $break['start']
+                        ? Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $break['start'])
+                        : null,
+
+                    'break_end' => $break['end']
+                        ? Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $break['end'])
+                        : null,
+                ]);
+            }
+
+            // 申請があれば承認済みに
+            if ($pending) {
+                $pending->update(['status' => 'approved']);
             }
         });
 
         return redirect()
-            ->route('admin.attendance.list')
-            ->with('message', '勤怠情報を修正しました');
+            ->route('admin.attendance.show', $attendance->id)
+            ->with('success', '勤怠情報を更新しました');
     }
 }
