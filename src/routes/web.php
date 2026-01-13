@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
+use App\Http\Controllers\Admin\AttendanceCorrectionRequestController as AdminAttendanceCorrectionRequestController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceListController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
@@ -65,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/attendance/{attendance}/correction', [AttendanceCorrectionRequestController::class, 'store'])
         ->name('attendance.correction.store');
 
-    // 申請一覧
+    // 申請一覧(一般スタッフ・管理者)
     Route::get('/stamp_correction_request/list', [AttendanceCorrectionRequestController::class, 'index'])
         ->name('correction_requests.index');
 });
@@ -88,4 +89,8 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/attendance/{id}', [AdminAttendanceController::class, 'update'])
             ->name('admin.attendance.update');
+        // Route::get(
+        //     '/stamp_correction_requests/list',
+        //     [AdminAttendanceCorrectionRequestController::class, 'index']
+        // )->name('admin.correction_requests.index');
     });

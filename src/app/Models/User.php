@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AttendanceCorrection::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\AttendanceCorrectionRequest;
+use App\Http\Requests\AttendanceCorrectionStoreRequest;
 use App\Models\Attendance;
-use App\Models\AttendanceCorrection;
+use App\Models\AttendanceCorrectionRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceCorrectionRequestController extends Controller
 {
-    public function store(AttendanceCorrectionRequest $request, $attendanceId)
+    /**
+     * 修正申請の登録
+     */
+    public function store(AttendanceCorrectionStoreRequest $request, $attendanceId)
     {
         $user = Auth::user();
 
@@ -18,43 +21,44 @@ class AttendanceCorrectionRequestController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
-        // バリデーション済みデータ取得
+        if (! $attendance) {
+            abort(404);
+        }
+
         $validated = $request->validated();
 
-        // requested_data にまとめる（COACHTECH想定）
-        $requestedData = [
-            'clock_in'  => $validated['clock_in']  ?? null,
-            'clock_out' => $validated['clock_out'] ?? null,
-            'breaks'    => $validated['breaks']    ?? null,
-            'reason'    => $validated['reason'],
-        ];
-
-        AttendanceCorrection::create([
-            'attendance_id' => $attendance?->id, // 勤務していない日は null
+        AttendanceCorrectionRequest::create([
+            'attendance_id' => $attendance?->id,
             'user_id'       => $user->id,
-            'requested_data' => $requestedData,
             'status'        => 'pending',
+            'requested_data' => [
+                'clock_in'  => $validated['clock_in']  ?? null,
+                'clock_out' => $validated['clock_out'] ?? null,
+                'breaks'    => $validated['breaks']    ?? null,
+                'reason'    => $validated['reason'],
+            ],
         ]);
-        return redirect()
-            ->route('attendance.show', $attendanceId);
+
+        return redirect()->route('attendance.show', $attendanceId);
     }
 
+    /**
+     * 一般スタッフ・管理者 申請一覧
+     */
     public function index(Request $request)
     {
+
         $status = $request->query('status', 'pending');
 
-        $correctionRequests = AttendanceCorrection::where('attendance_correction_requests.user_id', auth()->id())
-            ->where('attendance_correction_requests.status', $status)
-            ->join(
-                'attendances',
-                'attendance_correction_requests.attendance_id',
-                '=',
-                'attendances.id'
-            )
-            ->orderBy('attendances.date', 'asc')
-            ->select('attendance_correction_requests.*')
-            ->with(['attendance'])
-            ->get();
+        $query = AttendanceCorrectionRequest::with('attendance.user')
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc');
+
+        // 一般スタッフだけ制限
+        if (auth()->user()->role !== 'admin') {
+            $query->where('user_id', auth()->id());
+        }
+        $correctionRequests = $query->get();
 
         return view('correction_requests.index', compact(
             'correctionRequests',

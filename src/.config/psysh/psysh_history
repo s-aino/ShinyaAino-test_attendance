@@ -1,2 +1,22 @@
 Schema::hasTable('attendances');
 App\Models\Attendance::where('date', today())->first();
+Attendance::latest()->first();
+AttendanceCorrectionRequest::create([
+    'attendance_id' => 19,
+    'user_id' => 3, // 管理者 or 該当ユーザー
+    'status' => 'pending',
+    'requested_data' => [
+        'reason' => 'テスト申請'
+    ],
+]);
+
+\App\Models\AttendanceCorrectionRequest::create([
+    'attendance_id' => 19,
+    'user_id' => 3,
+    'status' => 'pending',
+    'requested_data' => [
+        'reason' => 'テスト申請',
+    ],
+]);
+
+exit

@@ -47,20 +47,20 @@
                     {{ $request->status === 'pending' ? '承認待ち' : '承認済み' }}
                 </td>
 
-                <td class="name-cell truncate">{{ $request->attendance->user->name }}</td>
+                <td class="name-cell truncate">{{ $request->attendance?->user?->name ?? '-' }}
+                </td>
                 <td class="date-cell">
-
-                    {{ \Carbon\Carbon::parse($request->attendance->date)->format('Y/m/d') }}
+                    {{ $request->attendance?->date ?? '-' }}
                 </td>
 
                 <td class="reason-cell truncate">
                     {{ $request->requested_data['reason'] ?? '' }}
                 </td>
-                 <td class="created-cell">
+                <td class="created-cell">
                     {{ $request->created_at->format('Y/m/d') }}
                 </td>
 
-               <td class="detail-cell">
+                <td class="detail-cell">
                     <a href="{{ route('attendance.show', $request->attendance_id) }}">
                         詳細
                     </a>
