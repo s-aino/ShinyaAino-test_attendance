@@ -41,7 +41,7 @@
         </thead>
 
         <tbody>
-            @forelse($correctionRequests as $request)
+            @foreach($correctionRequests as $request)
             <tr>
                 <td class="status-cell">
                     {{ $request->status === 'pending' ? '承認待ち' : '承認済み' }}
@@ -50,7 +50,7 @@
                 <td class="name-cell truncate">{{ $request->attendance?->user?->name ?? '-' }}
                 </td>
                 <td class="date-cell">
-                    {{ $request->attendance?->date ?? '-' }}
+                    {{ $request->attendance ? $request->attendance->date->format('Y/m/d') : '-' }}
                 </td>
 
                 <td class="reason-cell truncate">
@@ -61,16 +61,18 @@
                 </td>
 
                 <td class="detail-cell">
+                    @if(auth()->user()->role === 'admin')
+                    <a href="{{ route('stamp_correction_request.approve', $request->id) }}">
+                        詳細
+                    </a>
+                    @else
                     <a href="{{ route('attendance.show', $request->attendance_id) }}">
                         詳細
                     </a>
+                    @endif
                 </td>
             </tr>
-            @empty
-            <tr>
-                <!-- <td colspan="6">承認済みはありません。</td> -->
-            </tr>
-            @endforelse
+            @endforeach
         </tbody>
     </table>
 </div>

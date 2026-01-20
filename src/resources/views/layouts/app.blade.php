@@ -17,6 +17,13 @@
 <body>
     @include('components.header')
 
+    {{-- フラッシュメッセージ --}}
+    @if (session('success'))
+    <div class="flash-message flash-message--success">
+        {{ session('success') }}
+    </div>
+    @endif
+
     <main class="main">
         @yield('content')
     </main>

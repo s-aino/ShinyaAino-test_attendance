@@ -10,13 +10,6 @@
 @section('content')
 <div class="page-container">
 
-    {{-- 成功メッセージ --}}
-    @if (session('success'))
-    <div class="flash-message flash-message--success">
-        {{ session('success') }}
-    </div>
-    @endif
-
 
     <div class="page-title-wrap">
         <h2 class="page-title">勤怠詳細</h2>

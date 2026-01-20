@@ -39,7 +39,8 @@ class AttendanceCorrectionRequestController extends Controller
             ],
         ]);
 
-        return redirect()->route('attendance.show', $attendanceId);
+        return redirect()->route('attendance.show', $attendanceId)
+          ->with('success', '勤怠の修正申請しました');
     }
 
     /**
@@ -47,17 +48,24 @@ class AttendanceCorrectionRequestController extends Controller
      */
     public function index(Request $request)
     {
-
         $status = $request->query('status', 'pending');
-
         $query = AttendanceCorrectionRequest::with('attendance.user')
             ->where('status', $status)
-            ->orderBy('created_at', 'desc');
+            ->whereHas('attendance')
+            ->join(
+                'attendances',
+                'attendance_correction_requests.attendance_id',
+                '=',
+                'attendances.id'
+            )
+            ->orderBy('attendances.date', 'asc') // ← 対象日時の古い順
+            ->select('attendance_correction_requests.*');
 
         // 一般スタッフだけ制限
         if (auth()->user()->role !== 'admin') {
-            $query->where('user_id', auth()->id());
+            $query->where('attendance_correction_requests.user_id', auth()->id());
         }
+
         $correctionRequests = $query->get();
 
         return view('correction_requests.index', compact(

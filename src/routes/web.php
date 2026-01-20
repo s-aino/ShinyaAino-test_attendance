@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
+    // ->name('admin.') 
     ->group(function () {
 
         Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])
@@ -89,8 +90,16 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/attendance/{id}', [AdminAttendanceController::class, 'update'])
             ->name('admin.attendance.update');
-        // Route::get(
-        //     '/stamp_correction_requests/list',
-        //     [AdminAttendanceCorrectionRequestController::class, 'index']
-        // )->name('admin.correction_requests.index');
+    });
+Route::middleware(['auth', 'admin'])
+    ->group(function () {
+        Route::get(
+            '/stamp_correction_request/approve/{attendance_correct_request_id}',
+            [AdminAttendanceCorrectionRequestController::class, 'edit']
+        )->name('stamp_correction_request.approve');
+
+        Route::put(
+            '/stamp_correction_request/approve/{attendance_correction_request}',
+            [AdminAttendanceCorrectionRequestController::class, 'approve']
+        )->name('stamp_correction_request.approve.update');
     });

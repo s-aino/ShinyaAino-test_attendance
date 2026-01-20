@@ -29,6 +29,8 @@ class AttendanceApprovalRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'clock_in.required'  => '出勤時間を入力してください',
+            'clock_out.required' => '退勤時間を入力してください',
             'clock_in.regex'        => '出勤時間もしくは退勤時間が不適切な値です',
             'clock_out.regex'       => '出勤時間もしくは退勤時間が不適切な値です',
             'breaks.*.start.regex'  => '休憩時間が不適切な値です',

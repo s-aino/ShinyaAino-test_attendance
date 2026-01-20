@@ -8,24 +8,40 @@ use Illuminate\Http\Request;
 
 class AttendanceCorrectionRequestController extends Controller
 {
-    /**
-     * 管理者用 申請一覧
-     */
-    public function index(Request $request)
+    public function edit($id)
     {
-        dd('admin index reached');
-        // 表示切替（デフォルトは pending）
-        $status = $request->query('status', 'pending');
+        $correctionRequest = AttendanceCorrectionRequest::with('attendance.user')
+            ->findOrFail($id);
 
-        $correctionRequests = AttendanceCorrectionRequest::with([
-            'attendance.user',
-        ])
-            ->where('status', $status)
-            ->orderBy('created_at', 'desc')->get();
+        // requested_data を配列として扱う
+        $requested = $correctionRequest->requested_data ?? [];
 
-        return view('admin.correction_requests.index', compact(
-            'correctionRequests',
-            'status'
-        ));
+        // 休憩（空でないものだけ）
+        $breaks = collect($requested['breaks'] ?? [])
+            ->filter(fn($b) => !empty($b['start']) || !empty($b['end']))
+            ->values();
+
+        // 予備1行
+        $breaks->push([
+            'start' => '',
+            'end'   => '',
+        ]);
+
+        return view('admin.correction_requests.edit', [
+            'correctionRequest' => $correctionRequest,
+            'requested'         => $requested,
+            'breakRows'         => $breaks,
+        ]);
+    }
+
+    public function approve(AttendanceCorrectionRequest $attendanceCorrectionRequest)
+    {
+        $attendanceCorrectionRequest->update([
+            'status' => 'approved',
+        ]);
+
+        return redirect()
+            ->route('correction_requests.index', ['status' => 'approved'])
+            ->with('success', '勤怠修正申請を承認しました');
     }
 }
