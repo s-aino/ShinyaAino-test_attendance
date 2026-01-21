@@ -7,6 +7,7 @@ use App\Models\AttendanceCorrectionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\BreakTime;
+use Carbon\Carbon;
 
 class AttendanceCorrectionRequestController extends Controller
 {
@@ -36,13 +37,13 @@ class AttendanceCorrectionRequestController extends Controller
         ]);
     }
 
-    public function approve(AttendanceCorrectionRequest $correctionRequest)
+    public function approve(AttendanceCorrectionRequest  $attendanceCorrectionRequest)
     {
-        DB::transaction(function () use ($correctionRequest) {
+        DB::transaction(function () use ($attendanceCorrectionRequest) {
 
             // ① 申請データ取得
-            $requestedData = $correctionRequest->requested_data;
-            $attendance    = $correctionRequest->attendance;
+            $requestedData = $attendanceCorrectionRequest->requested_data;
+            $attendance    = $attendanceCorrectionRequest->attendance;
 
             // ② 勤怠（出退勤）更新
             $attendance->update([
@@ -50,8 +51,11 @@ class AttendanceCorrectionRequestController extends Controller
                 'clock_out' => $requestedData['clock_out'],
             ]);
 
+            // 勤怠日を取得
+            $date = $attendance->date->format('Y-m-d');
+
             // ③ 既存の休憩を全削除
-            $attendance->breakTimes()->delete();
+            $attendance->breaks()->delete();
 
             // ④ 申請された休憩を再作成
             if (!empty($requestedData['breaks'])) {
@@ -61,21 +65,19 @@ class AttendanceCorrectionRequestController extends Controller
                     if ($break['start'] && $break['end']) {
                         BreakTime::create([
                             'attendance_id' => $attendance->id,
-                            'break_start'   => $break['start'],
-                            'break_end'     => $break['end'],
+                            'break_start' => Carbon::parse("{$date} {$break['start']}"),
+                            'break_end'   => Carbon::parse("{$date} {$break['end']}"),
                         ]);
                     }
                 }
             }
 
             // ⑤ 申請ステータスを approved に更新
-            $correctionRequest->update([
+            $attendanceCorrectionRequest->update([
                 'status' => 'approved',
             ]);
         });
 
-        return redirect()
-            ->route('stamp_correction_request.approve', $correctionRequest->id)
-            ->with('success', '勤怠修正申請を承認しました');
+        return back()->with('success', '勤怠修正申請を承認しました');
     }
 }

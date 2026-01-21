@@ -9,7 +9,6 @@ AttendanceCorrectionRequest::create([
         'reason' => 'テスト申請'
     ],
 ]);
-
 \App\Models\AttendanceCorrectionRequest::create([
     'attendance_id' => 19,
     'user_id' => 3,
@@ -18,5 +17,6 @@ AttendanceCorrectionRequest::create([
         'reason' => 'テスト申請',
     ],
 ]);
-
 exit
+$req = App\Models\AttendanceCorrectionRequest::find(43);
+$req->attendance;
