@@ -16,12 +16,20 @@ class AttendanceCorrectionStoreRequest extends FormRequest
     {
         return [
             'clock_in'  => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
-            'clock_out' => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
-
+            // 出勤があるなら退勤は必須
+            'clock_out' => [
+                'nullable',
+                'required_with:clock_in',
+                'regex:/^\d{2}:\d{2}$/'
+            ],
             'breaks'            => ['nullable', 'array'],
             'breaks.*.start'    => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
-            'breaks.*.end'      => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
-
+            // 休憩入があるなら休憩戻は必須
+            'breaks.*.end' => [
+                'nullable',
+                'required_with:breaks.*.start',
+                'regex:/^\d{2}:\d{2}$/'
+            ],
             'reason' => ['required', 'string'],
         ];
     }
@@ -32,11 +40,12 @@ class AttendanceCorrectionStoreRequest extends FormRequest
             // 出勤・退勤
             'clock_in.regex'  => '出勤時間もしくは退勤時間が不適切な値です',
             'clock_out.regex' => '出勤時間もしくは退勤時間が不適切な値です',
+            'clock_out.required_with' => '出勤時間を入力した場合は退勤時間も入力してください。',
 
             // 休憩
             'breaks.*.start.regex' => '休憩時間が不適切な値です',
-            'breaks.*.end.regex'   => '休憩時間が不適切な値です',
-
+            'breaks.*.end.regex'   => '休憩時間が不適切な値です。',
+            'breaks.*.end.required_with' => '休憩入を入力した場合は休憩戻も入力してください。',
             // 備考
             'reason.required' => '備考を記入してください',
         ];

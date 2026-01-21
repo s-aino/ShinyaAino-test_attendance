@@ -123,7 +123,13 @@
 
     {{-- アクション --}}
     <div class="attendance-action">
+        @if ($correctionRequest->status === 'approved')
+        <button class="btn btn--gray btn-fix" disabled>
+            承認済み
+        </button>
+        @else
         <button type="submit" form="attendance-admin-update-form" class="btn btn--black btn-fix">承認</button>
+        @endif
     </div>
 </div>
 @endsection

@@ -47,14 +47,19 @@
                     {{ $request->status === 'pending' ? '承認待ち' : '承認済み' }}
                 </td>
 
-                <td class="name-cell truncate">{{ $request->attendance?->user?->name ?? '-' }}
+                <td class="name-cell">
+                    <span class="truncate">
+                        {{ $request->attendance?->user?->name }}
+                    </span>
                 </td>
                 <td class="date-cell">
                     {{ $request->attendance ? $request->attendance->date->format('Y/m/d') : '-' }}
                 </td>
 
-                <td class="reason-cell truncate">
-                    {{ $request->requested_data['reason'] ?? '' }}
+                <td class="reason-cell">
+                    <span class="truncate">
+                        {{ $request->requested_data['reason'] ?? '' }}
+                    </span>
                 </td>
                 <td class="created-cell">
                     {{ $request->created_at->format('Y/m/d') }}
