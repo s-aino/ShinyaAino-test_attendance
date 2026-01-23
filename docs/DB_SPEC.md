@@ -23,6 +23,7 @@ Google スプレッドシートの「テーブル仕様書」を Markdown 形式
 | date       | date            |    |    | ○  |           | 勤務日                            |
 | clock_in   | datetime            |    |    |    |           | 出勤時刻                           |
 | clock_out  | datetime            |    |    |    |           | 退勤時刻                           |
+| reason  | text            |    |    |    |           | 管理者修正理由                           |
 | created_at | timestamp       |    |    | ○  |           | レコード作成日時                       |
 | updated_at | timestamp       |    |    | ○  |           | レコード更新日時                       |
 

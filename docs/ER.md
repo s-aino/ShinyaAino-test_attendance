@@ -20,6 +20,7 @@ attendances {
   date date
   datetime clock_in
   datetime clock_out
+  text reason
   timestamp created_at
   timestamp updated_at
 }

@@ -122,7 +122,7 @@
                                 name="reason"
                                 class="reason-textarea"
                                 rows="2"
-                                {{ $hasPendingRequest ? 'disabled' : '' }}>{{ old('reason', $displayData['reason'] ?? '') }}</textarea>
+                                {{ $isPending ? 'readonly' : '' }}>{{ old('reason', $displayData['reason'] ?? '') }}</textarea>
                             <div class="error-area">
                                 @error('reason')
                                 <p class="form-error">{{ $message }}</p>

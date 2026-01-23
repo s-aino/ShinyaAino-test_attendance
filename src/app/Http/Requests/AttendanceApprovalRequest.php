@@ -22,7 +22,7 @@ class AttendanceApprovalRequest extends FormRequest
             'breaks.*.start' => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
             'breaks.*.end'   => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
 
-            'reason' => ['required', 'string'],
+            'reason' => ['required', 'string','max:255'],
         ];
     }
 

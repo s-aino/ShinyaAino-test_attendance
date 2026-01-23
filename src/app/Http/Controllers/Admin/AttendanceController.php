@@ -47,6 +47,7 @@ class AttendanceController extends Controller
                 ->first();
 
             $displayData = $latestCorrection->requested_data;
+            $displayData['reason'] = $attendance->reason ?? '';
         } else {
             $displayData = [
                 'clock_in'  => optional($attendance->clock_in)->format('H:i'),

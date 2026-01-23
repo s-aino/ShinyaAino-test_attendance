@@ -49,6 +49,7 @@ class AttendanceCorrectionRequestController extends Controller
             $attendance->update([
                 'clock_in'  => $requestedData['clock_in'],
                 'clock_out' => $requestedData['clock_out'],
+                'reason'    => $requestedData['reason'] ?? null,
             ]);
 
             // 勤怠日を取得

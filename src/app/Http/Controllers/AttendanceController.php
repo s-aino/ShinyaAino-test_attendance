@@ -128,8 +128,19 @@ class AttendanceController extends Controller
     |--------------------------------------------------------------------------
     */
         if ($isPending) {
-            // 承認待ち：申請データをそのまま表示
-            $displayData = $latestCorrection->requested_data;
+            $latestCorrection = $attendance->correctionRequests()
+                ->latest()
+                ->first();
+
+            $displayData = array_merge(
+                $latestCorrection->requested_data,
+                [
+                    // 念のため fallback
+                    'reason' => $latestCorrection->requested_data['reason']
+                        ?? $attendance->reason
+                        ?? '',
+                ]
+            );
         } else {
             // 通常：実データ
             $displayData = [
