@@ -13,6 +13,9 @@
     <form method="POST" action="{{ route('login') }}" novalidate class="auth-form">
         @csrf
 
+        {{-- 管理者ログイン判定用 --}}
+        <input type="hidden" name="login_type" value="admin">
+
         <div class="auth-field">
             <label for="email">メールアドレス</label>
             <input
@@ -20,11 +23,10 @@
                 type="email"
                 name="email"
                 value="{{ old('email') }}"
-                autocomplete="email"
-            >
+                autocomplete="email">
 
             @error('email')
-                <p class="auth-error">{{ $message }}</p>
+            <p class="auth-error">{{ $message }}</p>
             @enderror
         </div>
 
@@ -34,11 +36,10 @@
                 id="password"
                 type="password"
                 name="password"
-                autocomplete="current-password"
-            >
+                autocomplete="current-password">
 
             @error('password')
-                <p class="auth-error">{{ $message }}</p>
+            <p class="auth-error">{{ $message }}</p>
             @enderror
         </div>
 

@@ -25,19 +25,30 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // 🔴 管理者以外は弾く
-        if ($user->role !== 'admin') {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        $loginType = $request->input('login_type');
 
-            return back()->withErrors([
-                'email' => '管理者として登録されていません。',
-            ]);
+        //  管理者ログイン画面から
+        if ($loginType === 'admin') {
+
+            if ($user->role === 'staff') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => '管理者として登録されていません。',
+                ]);
+            }
+
+            // admin のみここに来る
+            return redirect()->route('admin.attendance.list');
+        }
+        //  一般ログイン画面
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.attendance.list');
         }
 
-        // 管理者のみ通過
-        return redirect()->route('admin.attendance.list');
+        return redirect()->route('attendance.index');
     }
 
     public function destroy(Request $request)
