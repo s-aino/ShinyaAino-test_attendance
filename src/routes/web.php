@@ -102,4 +102,5 @@ Route::middleware(['auth', 'admin'])
             '/stamp_correction_request/approve/{attendance_correction_request}',
             [AdminAttendanceCorrectionRequestController::class, 'approve']
         )->name('stamp_correction_request.approve.update');
+
     });

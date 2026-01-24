@@ -165,6 +165,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
 }
 
 /* カレンダーアイコン */
