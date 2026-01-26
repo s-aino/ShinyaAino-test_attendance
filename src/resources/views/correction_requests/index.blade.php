@@ -47,7 +47,7 @@
                     {{ $request->status === 'pending' ? '承認待ち' : '承認済み' }}
                 </td>
 
-                <td class="name-cell">
+                <td class="name-cell list-truncate">
                     <span class="truncate">
                         {{ $request->attendance?->user?->name }}
                     </span>
@@ -56,7 +56,7 @@
                     {{ $request->attendance ? $request->attendance->date->format('Y/m/d') : '-' }}
                 </td>
 
-                <td class="reason-cell">
+                <td class="reason-cell list-truncate">
                     <span class="truncate">
                         {{ $request->requested_data['reason'] ?? '' }}
                     </span>

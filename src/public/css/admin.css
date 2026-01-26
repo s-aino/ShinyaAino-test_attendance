@@ -81,3 +81,19 @@
 .calendar-empty {
     padding: 8px;
 }
+
+/* 管理者：カレンダーを開けるところだけ */
+.attendance-list__current-month.is-clickable-calendar,
+.attendance-list__current-month.is-clickable-calendar * {
+  cursor: pointer;
+}
+
+/* SVGがマウスイベントを奪って cursor が戻るのを防ぐ（重要） */
+.attendance-list__current-month.is-clickable-calendar svg,
+.attendance-list__current-month.is-clickable-calendar path {
+  pointer-events: none;
+}
+
+.attendance-list__current-month.is-clickable-calendar:hover {
+    opacity: 0.7;
+}

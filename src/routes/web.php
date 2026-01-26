@@ -9,7 +9,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceListController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
 use App\Http\Controllers\BreakTimeController;
-
+use App\Http\Controllers\Admin\StaffController as AdminstaffController;
 /*
 |--------------------------------------------------------------------------
 | Guest Routes（未ログイン）
@@ -90,6 +90,12 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/attendance/{id}', [AdminAttendanceController::class, 'update'])
             ->name('admin.attendance.update');
+
+        Route::get('/staff/list', [AdminStaffController::class, 'index'])
+            ->name('admin.staff.list');
+
+        Route::get('/attendance/staff/{user}', [AdminStaffController::class, 'show'])
+            ->name('admin.attendance.staff.show');
     });
 Route::middleware(['auth', 'admin'])
     ->group(function () {
@@ -102,5 +108,4 @@ Route::middleware(['auth', 'admin'])
             '/stamp_correction_request/approve/{attendance_correction_request}',
             [AdminAttendanceCorrectionRequestController::class, 'approve']
         )->name('stamp_correction_request.approve.update');
-
     });

@@ -128,7 +128,7 @@
     background: #ffffff;
     padding: 14px 24px;
     border-radius: 8px;
-    margin: 40px 0;
+    margin: 16px 0 40px 0;
 }
 
 /* 前月・翌月（グレー文字） */
@@ -165,8 +165,13 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
 }
+
+.attendance-list__current-month {
+    cursor: default;
+    user-select: none;
+}
+
 
 /* カレンダーアイコン */
 .attendance-list__current-month svg {
@@ -516,15 +521,6 @@
 
 
 
-/* 短縮してあとは隠す） */
-.truncate {
-    display: block;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 /* 申請一覧 固有 */
 .request-table .status-cell {
     width: 90px;
@@ -533,6 +529,7 @@
 
 .request-table .name-cell {
     width: 100px;
+    text-align: center;
 }
 
 .request-table .date-cell {
@@ -633,4 +630,63 @@
     color: #2e7d32;
     /* 濃い緑 */
     border: 1px solid #b7dfc2;
+}
+
+/* =========================
+   List Table Common
+========================= */
+
+.list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list-tr {
+    border-bottom: 1px solid #e5e5e5;
+    text-align: center;
+}
+
+.list-tr:last-child {
+    border-bottom: none;
+}
+
+.list-th {
+    font-size: 14px;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 8px;
+    text-align: center;
+    font-weight: 600;
+    color: #666;
+}
+
+.list-td {
+    font-size: 14px;
+    padding: 10px 8px;
+    vertical-align: middle;
+    color: #666;
+}
+
+/* 詳細リンク共通 */
+.list-detail-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.list-detail-link:hover {
+    opacity: 0.6;
+}
+
+/* テキスト省略（一覧用） */
+.list-truncate {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-table-wrap {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 12px 24px;
 }
