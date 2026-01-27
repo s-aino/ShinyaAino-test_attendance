@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Illuminate\Support\Carbon;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StaffController extends Controller
 {
@@ -40,7 +41,7 @@ class StaffController extends Controller
             ->get()
             ->keyBy(fn($attendance) => $attendance->date->toDateString());
 
-        // rows を構築（← ここが超重要）
+        // rows を構築
         $rows = collect();
 
         for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
@@ -54,6 +55,76 @@ class StaffController extends Controller
             'user'         => $user,
             'rows'         => $rows,
             'currentMonth' => $month,
+        ]);
+    }
+
+    public function csv(Request $request, User $user)
+    {
+        $month = $request->query('month', now()->format('Y-m'));
+
+        $startOfMonth = Carbon::parse($month)->startOfMonth();
+        $endOfMonth   = Carbon::parse($month)->endOfMonth();
+
+        // 勤怠を日付キーの辞書に
+        $attendanceMap = Attendance::with('breaks')
+            ->where('user_id', $user->id)
+            ->whereBetween('date', [
+                $startOfMonth->toDateString(),
+                $endOfMonth->toDateString(),
+            ])
+            ->get()
+            ->keyBy(fn($attendance) => $attendance->date->toDateString());
+
+        // rows を作る（画面と同じ考え方）
+        $rows = collect();
+
+        for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
+            $rows->push([
+                'date'       => $date->copy(),
+                'attendance' => $attendanceMap->get($date->toDateString()),
+            ]);
+        }
+
+        $fileName = sprintf(
+            '%s_%s_attendance.csv',
+            $user->name,
+            $month // 例: 2026-01
+        );
+
+        // CSVレスポンス
+        return new StreamedResponse(function () use ($rows, $user, $month) {
+
+            $stream = fopen('php://output', 'w');
+            fwrite($stream, "\xEF\xBB\xBF");
+
+            // ヘッダー行
+            fputcsv($stream, [
+                '氏名',
+                '日付',
+                '出勤時間',
+                '退勤時間',
+                '休憩時間',
+                '実働時間'
+            ]);
+
+            foreach ($rows as $row) {
+                $attendance = $row['attendance'];
+
+                fputcsv($stream, [
+                    $user->name,
+                    $row['date']->format('Y/m/d'),
+                    $attendance?->clockInFormatted(),
+                    $attendance?->clockOutFormatted(),
+                    $attendance?->breakTimeFormatted(),
+                    $attendance?->workTimeFormatted(),
+                ]);
+            }
+
+
+            fclose($stream);
+        }, 200, [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
         ]);
     }
 }

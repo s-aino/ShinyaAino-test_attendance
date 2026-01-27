@@ -65,6 +65,9 @@
     text-align: center;
     cursor: pointer;
     border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ボタン並び */
@@ -102,6 +105,12 @@
 .btn-white:hover {
     background-color: #e0dede;
 }
+
+/* CSVボタン専用の微調整 */
+.btn-csv {
+    text-decoration: none;
+}
+
 
 /* =========================
    退勤（お疲れさまでした）

@@ -107,6 +107,14 @@
             </tbody>
         </table>
     </div>
+    <div class="attendance-action">
+        <a
+            href="{{ route('admin.attendance.staff.csv', [
+      'user' => $user->id,
+      'month' => $currentMonth
+  ]) }}"
+            class="btn btn--black btn-fix btn-csv"> CSV出力
+        </a>
 
-</div>
-@endsection
+    </div>
+    @endsection
