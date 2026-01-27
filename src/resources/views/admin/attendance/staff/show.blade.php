@@ -18,7 +18,7 @@
     <div class="attendance-list__month">
 
         {{-- 前月 --}}
-        <a href="{{ route('admin.attendance.staff.show', ['user'  => $user->id,'month' => \Carbon\Carbon::parse($currentMonth)->subMonth()->format('Y-m')]) }}"
+        <a href="{{ route('admin.attendance.staff.show', ['id'  => $user->id,'month' => \Carbon\Carbon::parse($currentMonth)->subMonth()->format('Y-m')]) }}"
             class="month-nav month-nav--prev">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
                 <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
@@ -35,7 +35,7 @@
         </span>
 
         {{-- 翌月 --}}
-        <a href="{{ route('admin.attendance.staff.show', ['user'  => $user->id,'month' => \Carbon\Carbon::parse($currentMonth)->addMonth()->format('Y-m')]) }}"
+        <a href="{{ route('admin.attendance.staff.show', ['id'  => $user->id,'month' => \Carbon\Carbon::parse($currentMonth)->addMonth()->format('Y-m')]) }}"
             class="month-nav month-nav--next">
             <span class="month-nav__text">翌月</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
@@ -92,7 +92,7 @@
                     {{-- 詳細 --}}
                     <td class="col-detail">
                         @if($attendance)
-                        <a href="{{ route('admin.attendance.show', $attendance->id) }}"
+                        <a href="{{ route('admin.attendance.show', $attendance->id)}}"
                             class="detail-link">
                             詳細
                         </a>
@@ -110,7 +110,7 @@
     <div class="attendance-action">
         <a
             href="{{ route('admin.attendance.staff.csv', [
-      'user' => $user->id,
+      'id' => $user->id,
       'month' => $currentMonth
   ]) }}"
             class="btn btn--black btn-fix btn-csv"> CSV出力

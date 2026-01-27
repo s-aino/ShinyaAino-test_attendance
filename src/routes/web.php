@@ -94,10 +94,10 @@ Route::middleware(['auth', 'admin'])
         Route::get('/staff/list', [AdminStaffController::class, 'index'])
             ->name('admin.staff.list');
 
-        Route::get('/attendance/staff/{user}', [AdminStaffController::class, 'show'])
+        Route::get('/attendance/staff/{id}', [AdminStaffController::class, 'show'])
             ->name('admin.attendance.staff.show');
 
-        Route::get('/attendance/staff/{user}/csv', [AdminStaffController::class, 'csv'])
+        Route::get('/attendance/staff/{id}/csv', [AdminStaffController::class, 'csv'])
             ->name('admin.attendance.staff.csv');
     });
 Route::middleware(['auth', 'admin'])

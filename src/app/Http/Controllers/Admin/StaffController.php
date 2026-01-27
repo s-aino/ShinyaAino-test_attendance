@@ -22,8 +22,9 @@ class StaffController extends Controller
     }
 
 
-    public function show(Request $request, User $user)
+    public function show(Request $request, $id)
     {
+        $user = User::findOrFail($id);
         // 表示月
         $month = $request->query('month', now()->format('Y-m'));
 
@@ -58,8 +59,9 @@ class StaffController extends Controller
         ]);
     }
 
-    public function csv(Request $request, User $user)
+    public function csv(Request $request, $id)
     {
+        $user = User::findOrFail($id);
         $month = $request->query('month', now()->format('Y-m'));
 
         $startOfMonth = Carbon::parse($month)->startOfMonth();

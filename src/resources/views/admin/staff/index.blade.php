@@ -39,7 +39,7 @@
                         </td>
                         <td class="list-td">
                             <a
-                                href="{{ route('admin.attendance.staff.show', $staff->id) }}"
+                                href="{{ route('admin.attendance.staff.show',  ['id' => $staff->id])}}"
                                 class="list-detail-link"
                             >
                                 詳細
