@@ -151,6 +151,6 @@ php artisan test
 
 - **ER 図（Mermaid 元ファイル）** : [docs/ER.md](docs/ER.md)
 - **テーブル仕様書** : [docs/DB_SPEC.md](docs/DB_SPEC.md)
-  
-  （Google スプレッドシート版「テーブル仕様書」を Markdown へ書き起こしたもの）
+- **画面・ルート対応表** : [docs/view-route.md](docs/view-route.md)
+
 

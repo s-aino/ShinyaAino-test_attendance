@@ -96,7 +96,11 @@ class StaffController extends Controller
         // CSVレスポンス
         return new StreamedResponse(function () use ($rows, $user, $month) {
 
+            // ▼ 書き込み先を「HTTPレスポンス（= ブラウザ）」にする
+            // ここに書いた内容が、そのままCSVとしてダウンロードされる
             $stream = fopen('php://output', 'w');
+
+            // ▼ BOMを書き込む（Excelで日本語が文字化けしないようにする）
             fwrite($stream, "\xEF\xBB\xBF");
 
             // ヘッダー行
@@ -110,6 +114,8 @@ class StaffController extends Controller
             ]);
 
             foreach ($rows as $row) {
+
+                // この日の勤怠（なければ null）
                 $attendance = $row['attendance'];
 
                 fputcsv($stream, [
@@ -125,7 +131,9 @@ class StaffController extends Controller
 
             fclose($stream);
         }, 200, [
+            // ▼ レスポンスはCSVですよ、という指定
             'Content-Type'        => 'text/csv; charset=UTF-8',
+            // ▼ ブラウザに「ダウンロードさせる」ための指定
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
         ]);
     }
