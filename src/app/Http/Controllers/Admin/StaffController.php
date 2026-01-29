@@ -15,7 +15,7 @@ class StaffController extends Controller
     {
         // staff ロールのユーザーのみ取得
         $staffs = User::where('role', 'staff')
-            ->orderBy('name')
+            ->orderBy('id')
             ->get();
 
         return view('admin.staff.index', compact('staffs'));
