@@ -80,6 +80,22 @@
     opacity: 0.8;
 }
 
+.verify-btn{
+    display:inline-block;
+    background:#cac9c9;
+    color:#000;
+    padding:12px 32px;
+    border:2px solid #000;   /* ← 黒枠 */
+    border-radius:6px;
+    font-weight:600;
+    text-decoration:none;
+    transition:0.2s;
+    margin-bottom:40px;
+}
+.verify-btn:hover{
+    background:#d5d5d5;
+}
+
 /* =====================
    リンク
 ===================== */
@@ -97,6 +113,35 @@
 .auth-link a:hover {
     text-decoration: underline;
 }
+
+.verify-resend{
+    background:none;
+    border:none;
+    color:#1a73e8;
+    /* text-decoration:underline; */
+    font-size:14px;
+    cursor:pointer;
+    padding:0;
+}
+
+/* =====================
+   メール認証ページ専用
+===================== */
+.verify-wrap{
+    text-align:center;
+    margin-top:140px;
+}
+
+/* 説明文 */
+.verify-message{
+    font-size:18px;
+    font-weight:600;
+    line-height:1.8;
+    margin-bottom:40px;
+}
+
+
+
 
 /* =====================
    エラー表示

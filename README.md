@@ -6,6 +6,7 @@ Docker 上で動作する Laravel 製の勤怠管理アプリです。
 ## 🔧 機能一覧
 
 ### 認証について
+- メール認証（Mailhog）機能
 - role による STAFF / ADMIN 制御
 - 管理者専用ログイン画面あり  
 → 詳細: [docs/auth.md](docs/auth.md)
@@ -41,11 +42,11 @@ composer install
 ```
 ---
 #### 3. .env 作成  
-.env.example をコピー、
+.env.example をコピー
 ```bash
 cp .env.example .env
 ```
-以下の DB 設定に変更：
+.envを以下の DB 設定に変更：
 ```env
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -54,6 +55,17 @@ DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=test@example.com
+MAIL_FROM_NAME="Attendance App"
+```
+
 ---
 #### 4. アプリケーションキーの作成
 ```bash
@@ -90,6 +102,7 @@ php artisan route:clear
 ブラウザでアプリを利用できる状態になりました。
 
 - アプリURL: http://localhost
+- 管理者用ログインURL: http://localhost/admin/login
 ---
 ## 🧾 PHPUnit テスト
 ####   テスト環境（env.testing）

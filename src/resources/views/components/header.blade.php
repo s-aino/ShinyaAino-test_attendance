@@ -8,7 +8,8 @@
         @if (
         auth()->check() &&
         !request()->is('login') &&
-        !request()->is('admin/login')
+        !request()->is('admin/login') &&
+        !request()->is('email/verify')
         )
 
         <nav class="header__nav">

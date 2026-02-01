@@ -428,6 +428,9 @@
 .btn--gray {
     background: #767676;
     color: #fff;
+    cursor: not-allowed;  
+    pointer-events: none; 
+    opacity: 0.7;
 }
 
 

@@ -13,6 +13,26 @@
 
 ---
 
+## メール認証（Email Verification）
+
+本アプリでは Laravel Fortify のメール認証機能を使用しています。
+
+開発環境では MailHog を利用してメール送信を確認します。
+
+### MailHog 起動
+http://localhost:8025
+
+### メール認証フロー
+1. 新規登録
+2. 認証メール送信
+3. MailHogでメール確認
+4. 認証リンククリック
+5. ログイン可能
+
+※ users.email_verified_at が null の場合はログイン不可
+
+---
+
 ## ユーザー区分
 | role | 説明 |
 |----|----|

@@ -35,47 +35,48 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])
+    ->group(function () {
 
-    // 勤怠登録画面
-    Route::get('/attendance', [AttendanceController::class, 'index'])
-        ->name('attendance.index');
-    // 出勤
-    Route::post('/attendance/start', [AttendanceController::class, 'start'])
-        ->name('attendance.start');
-    // 退勤
-    Route::post('/attendance/end', [AttendanceController::class, 'end'])
-        ->name('attendance.end');
+        // 勤怠登録画面
+        Route::get('/attendance', [AttendanceController::class, 'index'])
+            ->name('attendance.index');
+        // 出勤
+        Route::post('/attendance/start', [AttendanceController::class, 'start'])
+            ->name('attendance.start');
+        // 退勤
+        Route::post('/attendance/end', [AttendanceController::class, 'end'])
+            ->name('attendance.end');
 
-    // 休憩入
-    Route::post('/attendance/break/start', [BreakTimeController::class, 'start'])
-        ->name('break.start');
-    // 休憩戻
-    Route::post('/attendance/break/end', [BreakTimeController::class, 'end'])
-        ->name('break.end');
+        // 休憩入
+        Route::post('/attendance/break/start', [BreakTimeController::class, 'start'])
+            ->name('break.start');
+        // 休憩戻
+        Route::post('/attendance/break/end', [BreakTimeController::class, 'end'])
+            ->name('break.end');
 
-    // 勤怠一覧
-    Route::get('/attendance/list', [AttendanceListController::class, 'index'])
-        ->name('attendance.list');
+        // 勤怠一覧
+        Route::get('/attendance/list', [AttendanceListController::class, 'index'])
+            ->name('attendance.list');
 
-    // 勤怠詳細
-    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show'])
-        ->name('attendance.show');
+        // 勤怠詳細
+        Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show'])
+            ->name('attendance.show');
 
-    // 修正申請
-    Route::post('/attendance/{attendance}/correction', [AttendanceCorrectionRequestController::class, 'store'])
-        ->name('attendance.correction.store');
+        // 修正申請
+        Route::post('/attendance/{attendance}/correction', [AttendanceCorrectionRequestController::class, 'store'])
+            ->name('attendance.correction.store');
 
-    /*
+        /*
 |--------------------------------------------------------------------------
 | Staff/Admin Routes（共通）
 |--------------------------------------------------------------------------
 */
 
-    // 申請一覧(一般スタッフ・管理者)
-    Route::get('/stamp_correction_request/list', [AttendanceCorrectionRequestController::class, 'index'])
-        ->name('correction_requests.index');
-});
+        // 申請一覧(一般スタッフ・管理者)
+        Route::get('/stamp_correction_request/list', [AttendanceCorrectionRequestController::class, 'index'])
+            ->name('correction_requests.index');
+    });
 
 /*
 |--------------------------------------------------------------------------
@@ -83,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'admin'])
+Route::middleware(['auth','verified','admin'])
     ->prefix('admin')
     ->group(function () {
 
@@ -111,7 +112,7 @@ Route::middleware(['auth', 'admin'])
         Route::get('/attendance/staff/{id}/csv', [AdminStaffController::class, 'csv'])
             ->name('admin.attendance.staff.csv');
     });
-Route::middleware(['auth', 'admin'])
+Route::middleware(['auth','verified','admin'])
     ->group(function () {
 
         // 勤怠修正申請 承認画面（管理者）

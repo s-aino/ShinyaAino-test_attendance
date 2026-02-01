@@ -11,7 +11,7 @@ class DummyAttendanceSeeder extends Seeder
 {
     public function run(): void
     {
-        $userIds = [2, 7, 8];
+        $userIds = [ 4, 5, 6, 7, 8];
 
         $periods = [
             ['2025-12-01', '2025-12-31'],
@@ -94,7 +94,7 @@ class DummyAttendanceSeeder extends Seeder
 
     private function seedAinoSpecial(): void
 {
-    $userId = 3;
+    $userId = 9;
 
     $start = Carbon::parse('2025-12-01');
     $end   = Carbon::parse('2026-01-29');

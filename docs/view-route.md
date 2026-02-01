@@ -1,6 +1,8 @@
 ###　認証関連（共通）
 | 画面名        | URL            | ルート名          | Controller@Method                        | 説明                |
 | ---------- | -------------- | ------------- | ---------------------------------------- | ----------------- |
+| メール認証確認画面 | `/email/verify `| `verification.notice` | `Fortify `| メール認証待ち画面 |
+| メール認証処理 | `/email/verify/{id}/{hash}` | `verification.verify` | `Fortify` | 認証リンク処理 |
 | スタッフログイン画面 | `/login`       | `login`       | `AuthenticatedSessionController@create`  | 一般スタッフログイン画面      |
 | 管理者ログイン画面  | `/admin/login` | `admin.login` | `AdminAuthController@showLoginForm`      | 管理者ログイン画面         |
 | ログイン処理（共通） | `/login`       | `login.store` | `AuthenticatedSessionController@store`   | スタッフ・管理者共通のログイン処理 |

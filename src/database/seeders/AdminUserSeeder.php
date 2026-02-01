@@ -19,6 +19,11 @@ class AdminUserSeeder extends Seeder
                 'name' => '課長',
                 'email' => 'kacho@mail',
             ],
+            [
+                'name' => '管理者',
+                'email' => 'admin@mail',
+            ],
+
         ];
 
         foreach ($admins as $admin) {
@@ -29,6 +34,7 @@ class AdminUserSeeder extends Seeder
                     'name' => $admin['name'],
                     'password' => Hash::make('11111111'),
                     'role' => 'admin',
+                    'email_verified_at' => now(),
                 ]
             );
         }
