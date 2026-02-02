@@ -42,7 +42,7 @@ class BreakTimeController extends Controller
             'break_start' => Carbon::now(),
         ]);
 
-        return back();
+        return redirect()->route('attendance.index');
     }
 
     /**
@@ -74,6 +74,6 @@ class BreakTimeController extends Controller
             'break_end' => Carbon::now(),
         ]);
 
-        return back();
+        return redirect()->route('attendance.index');
     }
 }

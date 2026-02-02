@@ -8,6 +8,7 @@
 # Laravel
 # ======================
 .env
+.env.testing
 .env.backup
 /public/hot
 /public/storage

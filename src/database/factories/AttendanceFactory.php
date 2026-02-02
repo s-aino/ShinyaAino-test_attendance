@@ -15,9 +15,8 @@ class AttendanceFactory extends Factory
         return [
             'user_id' => User::factory(),
             'date' => now()->toDateString(),
-            'clock_in' => '09:00:00',
-            'clock_out' => '18:00:00',
-            'status' => 'working',
+            'clock_in' => now(),
+            'clock_out' => null,
         ];
     }
 }

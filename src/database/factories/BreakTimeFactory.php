@@ -14,8 +14,8 @@ class BreakTimeFactory extends Factory
     {
         return [
             'attendance_id' => Attendance::factory(),
-            'break_start' => '12:00:00',
-            'break_end' => '13:00:00',
+            'break_start' => now(),
+            'break_end' => null,
         ];
     }
 }

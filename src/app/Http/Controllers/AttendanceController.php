@@ -76,7 +76,7 @@ class AttendanceController extends Controller
             'clock_in' => Carbon::now(),
         ]);
 
-        return back();
+        return redirect()->route('attendance.index');
     }
 
     public function end()
@@ -97,7 +97,7 @@ class AttendanceController extends Controller
             'clock_out' => Carbon::now(),
         ]);
 
-        return back();
+        return redirect()->route('attendance.index');
     }
 
     public function show($id)
