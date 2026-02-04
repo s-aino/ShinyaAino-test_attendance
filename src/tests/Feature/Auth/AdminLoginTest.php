@@ -10,6 +10,9 @@ class AdminLoginTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * ① 正常ログイン（admin）
+     */
     public function test_admin_can_login()
     {
         $admin = User::factory()->create([
@@ -27,6 +30,10 @@ class AdminLoginTest extends TestCase
         $this->assertAuthenticatedAs($admin);
     }
 
+    /**
+     * ② メール未入力
+     * → バリデーションメッセージ
+     */
     public function test_email_is_required()
     {
         $response = $this->post('/login', [
@@ -35,8 +42,13 @@ class AdminLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('email');
+        $this->assertGuest();
     }
 
+    /**
+     * ③ パスワード未入力
+     * → バリデーションメッセージ
+     */
     public function test_password_is_required()
     {
         $response = $this->post('/login', [
@@ -45,8 +57,13 @@ class AdminLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('password');
+        $this->assertGuest();
     }
 
+    /**
+     * ④ パスワード誤り
+     * → ログイン失敗
+     */
     public function test_login_fails_with_wrong_password()
     {
         $admin = User::factory()->create([
@@ -60,8 +77,13 @@ class AdminLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors();
+        $this->assertGuest();
     }
 
+    /**
+     * ⑤ 存在しないメール
+     * → ログイン失敗
+     */
     public function test_login_fails_with_unregistered_email()
     {
         $response = $this->post('/login', [
@@ -70,13 +92,18 @@ class AdminLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors();
+        $this->assertGuest();
     }
 
-    public function test_staff_cannot_login_as_admin()
+    /**
+     * ⑥ staffはadminとしてログイン不可
+     */
+    public function test_staff_cannot_access_admin_page()
     {
         $staff = User::factory()->create([
             'role' => 'staff',
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
         ]);
 
         $response = $this->post('/login', [
@@ -84,6 +111,8 @@ class AdminLoginTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertRedirect('/attendance'); // staffは通常画面へ
+        // staffは通常画面へ
+        $response->assertRedirect('/attendance');
+        $this->assertAuthenticatedAs($staff);
     }
 }

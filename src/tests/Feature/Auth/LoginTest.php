@@ -11,7 +11,7 @@ class LoginTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * ①-1 正常ログイン
+     * ① 正常ログイン
      */
     public function test_staff_can_login()
     {
@@ -27,13 +27,12 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/attendance');
-
         $this->assertAuthenticatedAs($user);
     }
 
-
     /**
-     * ①-2 メール未入力
+     * ② メール未入力
+     * → バリデーションエラー表示
      */
     public function test_email_is_required()
     {
@@ -43,13 +42,12 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('email');
-
         $this->assertGuest();
     }
 
-
     /**
-     * ①-3 パスワード未入力
+     * ③ パスワード未入力
+     * → バリデーションエラー表示
      */
     public function test_password_is_required()
     {
@@ -59,13 +57,12 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('password');
-
         $this->assertGuest();
     }
 
-
     /**
-     * ①-4 パスワード誤り
+     * ④ パスワード誤り
+     * → 認証失敗
      */
     public function test_login_fails_with_wrong_password()
     {
@@ -79,13 +76,13 @@ class LoginTest extends TestCase
             'password' => 'wrong-password',
         ]);
 
+        $response->assertSessionHasErrors(); // 認証失敗エラー
         $this->assertGuest();
-        $response->assertSessionHasErrors();
     }
 
-
     /**
-     * ①-5 存在しないメール
+     * ⑤ 存在しないメール
+     * → 認証失敗
      */
     public function test_login_fails_with_unregistered_email()
     {
@@ -94,7 +91,7 @@ class LoginTest extends TestCase
             'password' => 'password',
         ]);
 
-        $this->assertGuest();
         $response->assertSessionHasErrors();
+        $this->assertGuest();
     }
 }

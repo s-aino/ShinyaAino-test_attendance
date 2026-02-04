@@ -12,6 +12,7 @@ class RegisterTest extends TestCase
 
     /**
      * ① 正常登録
+     * フォーム内容が正しければ登録成功
      */
     public function test_user_can_register()
     {
@@ -22,10 +23,10 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        // 登録後 Fortify はログイン状態になる
+        // Fortifyは登録後ログイン状態
         $this->assertAuthenticated();
 
-        // DBに保存確認
+        // DB保存確認
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
             'role' => 'staff',
@@ -33,7 +34,6 @@ class RegisterTest extends TestCase
 
         $response->assertRedirect('/attendance');
     }
-
 
     /**
      * ② 名前未入力
@@ -51,7 +51,6 @@ class RegisterTest extends TestCase
         $this->assertGuest();
     }
 
-
     /**
      * ③ メール未入力
      */
@@ -68,9 +67,24 @@ class RegisterTest extends TestCase
         $this->assertGuest();
     }
 
+    /**
+     * ④ パスワード未入力
+     */
+    public function test_password_is_required()
+    {
+        $response = $this->post('/register', [
+            'name' => 'テスト',
+            'email' => 'test@example.com',
+            'password' => '',
+            'password_confirmation' => '',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+        $this->assertGuest();
+    }
 
     /**
-     * ④ パスワード8文字未満
+     * ⑤ パスワード8文字未満
      */
     public function test_password_must_be_at_least_8_characters()
     {
@@ -85,9 +99,8 @@ class RegisterTest extends TestCase
         $this->assertGuest();
     }
 
-
     /**
-     * ⑤ パスワード不一致
+     * ⑥ パスワード不一致
      */
     public function test_password_confirmation_must_match()
     {
@@ -101,4 +114,21 @@ class RegisterTest extends TestCase
         $response->assertSessionHasErrors('password');
         $this->assertGuest();
     }
+
+    /**
+     * ⑦ メール形式不正（追加推奨）
+     */
+    public function test_email_must_be_valid_format()
+    {
+        $response = $this->post('/register', [
+            'name' => 'テスト',
+            'email' => 'invalid-email',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $response->assertSessionHasErrors('email');
+        $this->assertGuest();
+    }
+
 }

@@ -16,20 +16,24 @@ class AttendanceCorrectionRequestFactory extends Factory
         return [
             'attendance_id' => Attendance::factory(),
             'user_id' => User::factory(),
-            'requested_clock_in' => '09:30:00',
-            'requested_clock_out' => '18:30:00',
-            'requested_breaks' => [
-                [
-                    'break_start' => '12:30:00',
-                    'break_end' => '13:30:00',
+
+            'requested_data' => [
+                'clock_in' => '09:30',
+                'clock_out' => '18:30',
+                'breaks' => [
+                    [
+                        'start' => now()->format('Y-m-d 12:30:00'),
+                        'end'   => now()->format('Y-m-d 13:30:00'),
+                    ],
                 ],
+                'reason' => '打刻漏れのため',
             ],
-            'reason' => '打刻漏れのため',
+
             'status' => 'pending',
         ];
     }
 
-    public function approved(): static
+    public function approve()
     {
         return $this->state(fn () => [
             'status' => 'approved',

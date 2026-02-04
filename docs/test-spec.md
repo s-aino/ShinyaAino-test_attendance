@@ -37,7 +37,13 @@
 |----|----------------------------------|-------------------------------|
 | 12 | 勤怠一覧情報取得機能（管理者） | AdminAttendanceListTest.php |
 | 13 | 勤怠詳細情報取得・修正機能（管理者） | AdminAttendanceEditTest.php |
-| 14 | ユーザー情報取得機能（管理者） | UserListTest.php |
-| 15 | 勤怠情報修正機能（管理者／承認） | ApprovalTest.php |
-
+| 14-1 | ユーザー情報取得機能（管理者／スタッフ一覧） | UserListTest.php |
+| 14-2 | ユーザー情報取得機能（管理者／スタッフ別一覧） | StaffAttendanceListTest |
+| 15-1 | 勤怠情報修正機能（管理者／一覧表示） | ApprovalListTest.php |
+| 15-2 | 勤怠情報修正機能（管理者／詳細表示） | ApprovalDetailTest.php |
+| 15-3 | 勤怠情報修正機能（管理者／承認処理） | ApprovalActionTest.php |
 ---
+**テスト14は機能責務ごとに
+UserListTest / StaffAttendanceListTest に分割しています**
+**テスト15は機能責務ごとに
+ApprovalListTest/ ApprovalDetailTest /  ApprovalActionTest に分割しています**

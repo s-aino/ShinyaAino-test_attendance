@@ -127,4 +127,5 @@ class ClockOutTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('18:00');
     }
+
 }

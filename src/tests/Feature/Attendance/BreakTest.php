@@ -39,27 +39,27 @@ class BreakTest extends TestCase
     }
 
 
-    /**
-     * 休憩中は再度休憩できない
-     */
-    public function test_user_cannot_start_break_twice()
+    public function test_user_can_take_break_multiple_times_in_a_day()
     {
         $user = User::factory()->create(['email_verified_at' => now()]);
 
-        $attendance = Attendance::factory()->create([
-            'user_id' => $user->id,
-            'date' => today(),
+        $attendance = Attendance::create([
+            'user_id'  => $user->id,
+            'date'     => today(),
+            'clock_in' => now(),
         ]);
 
         $this->actingAs($user);
 
+        // 1回目
         $this->post('/attendance/break/start');
-        $this->post('/attendance/break/start');
+        $this->post('/attendance/break/end');
 
-        $this->assertEquals(
-            1,
-            BreakTime::count()
-        );
+        // 2回目
+        $this->post('/attendance/break/start');
+        $this->post('/attendance/break/end');
+
+        $this->assertEquals(2, BreakTime::count());
     }
 
 
