@@ -6,11 +6,17 @@ Docker 上で動作する Laravel 製の勤怠管理アプリです。
 ## 🔧 機能一覧
 
 ### 認証について
-- メール認証（Mailhog）機能
+- メール認証機能
 - role による STAFF / ADMIN 制御
 - 管理者専用ログイン画面あり  
 → 詳細: [docs/auth.md](docs/auth.md)
 ---
+###  MailHog（メール確認）
+
+メール認証は MailHog を使用しています。
+- MailHog UI : http://localhost:8025
+会員登録後、上記URLで認証メールを確認できます。
+--- 
 ### 勤怠データの仕様
 - 自動退勤なし
 - 修正申請ベース設計  
@@ -101,8 +107,9 @@ php artisan route:clear
 ### 🎉 以上で環境構築は完了です。
 ブラウザでアプリを利用できる状態になりました。
 
-- アプリURL: http://localhost
-- 管理者用ログインURL: http://localhost/admin/login
+- アプリ: http://localhost
+- 管理者用: http://localhost/admin/login
+- MailHog : http://localhost:8025
 ---
 ## 🧾 PHPUnit テスト
 ####   テスト環境（env.testing）
@@ -124,6 +131,17 @@ DB_DATABASE=laravel_test_db
 DB_USERNAME=root
 DB_PASSWORD=root
 ```
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=test@example.com
+MAIL_FROM_NAME="Attendance App"
+```
+
 ##### APP_KEYの生成（初回のみ）
 テスト環境専用のアプリケーションキーを生成します。
 ```bash
@@ -144,7 +162,7 @@ The database 'laravel_test_db' does not exist. Create it? (yes/no)
 
 ####   テストの実行
 
-本アプリには 16 個の自動テストが含まれています。
+本アプリには 19 個の自動テストが含まれています。
 以下のコマンドで すべてのテストを一括実行できます。
 ```bash
 php artisan test
@@ -160,10 +178,11 @@ php artisan test
 - MySQL 8.x
 - Nginx（php-fpm 経由）
   
-## 🗂 ER 図 / 仕様書
+## 🗂 ER 図 / 仕様書　/ 対応表
 
 - **ER 図（Mermaid 元ファイル）** : [docs/ER.md](docs/ER.md)
 - **テーブル仕様書** : [docs/DB_SPEC.md](docs/DB_SPEC.md)
 - **画面・ルート対応表** : [docs/view-route.md](docs/view-route.md)
+- **PHP Unitテスト対応表** : [docs/test-spec.md](docs/test-spec.md)
 
 
