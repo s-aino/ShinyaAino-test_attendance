@@ -111,6 +111,21 @@ php artisan route:clear
 - 管理者用: http://localhost/admin/login
 - MailHog : http://localhost:8025
 ---
+#### サンプルユーザー（Seeder）
+
+本アプリには、動作確認用のユーザーがシーディングされています。
+
+**一般スタッフ**
+- 氏名：高橋花子
+- メールアドレス：takahashi@mail.com
+- パスワード：00000000（8文字）
+
+**管理者**
+- メールアドレス：admin@mail.com
+- パスワード：11111111（8文字）
+
+※ これらのアカウントはローカル環境・確認用です。
+
 ## 🧾 PHPUnit テスト
 ####   テスト環境（env.testing）
 
@@ -142,28 +157,38 @@ MAIL_FROM_ADDRESS=test@example.com
 MAIL_FROM_NAME="Attendance App"
 ```
 
-##### APP_KEYの生成（初回のみ）
-テスト環境専用のアプリケーションキーを生成します。
+##### テスト用データベースの作成（初回のみ）
+Docker 環境では、テスト用データベースは MySQL 側で事前に作成する必要があります。
 ```bash
+docker compose exec mysql bash
+mysql -u root -p
+```
+```sql
+CREATE DATABASE laravel_test_db;
+SHOW DATABASES;
+```
+```md
+MySQL から exit で抜けたあと、PHP コンテナに戻ります。
+```
+
+##### APP_KEY の生成（初回のみ）
+```bash
+docker compose exec php bash
 php artisan key:generate --env=testing
 ```
 
 ##### テーブルの作成（初回のみ）
 ```bash
+php artisan config:clear
 php artisan migrate --env=testing
 ```
-
-##### 注意：初回は以下のような質問が表示されます
-```bash
-The database 'laravel_test_db' does not exist. Create it? (yes/no)
-```
- **👉 yes  と入力してください。**
-（yes を選ぶことで、テスト用 DB が自動作成されます）
 
 ####   テストの実行
 
 本アプリには 19 個の自動テストが含まれています。
 以下のコマンドで すべてのテストを一括実行できます。
+※ php artisan test 実行時は、自動的に testing 環境（.env.testing）が使用されます。
+
 ```bash
 php artisan test
 ```

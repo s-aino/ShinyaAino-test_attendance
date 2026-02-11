@@ -10,15 +10,6 @@
 <div class="auth-container">
     <h1 class="auth-title">会員登録</h1>
 
-    <!-- {{-- エラーメッセージ --}}
-    @if ($errors->any())
-    <ul class="auth-errors">
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    @endif -->
-
     <form method="POST" action="{{ route('register') }}" novalidate class="auth-form">
         @csrf
 

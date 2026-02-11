@@ -95,7 +95,6 @@ class AttendanceController extends Controller
         AttendanceApprovalRequest $request,
         $id
     ) {
-        // dd($request->all());
         $attendance = Attendance::with(['breaks', 'correctionRequests'])
             ->findOrFail($id);
 
