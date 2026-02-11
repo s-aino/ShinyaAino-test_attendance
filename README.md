@@ -117,11 +117,11 @@ php artisan route:clear
 
 **一般スタッフ**
 - 氏名：高橋花子
-- メールアドレス：takahashi@mail.com
+- メールアドレス：takahashi@mail
 - パスワード：00000000（8文字）
 
 **管理者**
-- メールアドレス：admin@mail.com
+- メールアドレス：admin@mail
 - パスワード：11111111（8文字）
 
 ※ これらのアカウントはローカル環境・確認用です。
