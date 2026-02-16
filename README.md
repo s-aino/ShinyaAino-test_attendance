@@ -205,7 +205,8 @@ php artisan test
   
 ## 🗂 ER 図 / 仕様書　/ 対応表
 
-- **ER 図（Mermaid 元ファイル）** : [docs/ER.md](docs/ER.md)
+- **ER図（画像）** : [docs/er.png](docs/er.png)
+- **Mermaid元ファイル（ER図ソース）** : [docs/er.mmd](docs/er.mmd)
 - **テーブル仕様書** : [docs/DB_SPEC.md](docs/DB_SPEC.md)
 - **画面・ルート対応表** : [docs/view-route.md](docs/view-route.md)
 - **PHP Unitテスト対応表** : [docs/test-spec.md](docs/test-spec.md)
