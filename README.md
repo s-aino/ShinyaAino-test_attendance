@@ -132,8 +132,9 @@ php artisan route:clear
 phpunit / php artisan test 実行時は、本番 DB とは別の テスト用データベース を使用します。
 
 #####   env.testing を作成
-プロジェクト直下で以下を実行します。
+PHPコンテナ内で以下を実行してください。
 ```bash
+docker compose exec php bash
 cp .env.example .env.testing
 ```
 ##### 　env.testingに以下の内容を記述してください。
@@ -182,6 +183,26 @@ php artisan key:generate --env=testing
 php artisan config:clear
 php artisan migrate --env=testing
 ```
+
+##### tests/Unit フォルダの確認（重要）
+
+PHPUnitの設定上、`tests/Unit` フォルダが存在しない場合、テストが正常に開始されないことがあります。
+
+PHPコンテナ内で以下を実行し、`Unit` フォルダが存在するか確認してください。
+
+```bash
+docker compose exec php bash
+ls tests
+```
+`Unit` フォルダが存在しない場合は、以下のコマンドで作成してください：
+```bash
+mkdir tests/Unit
+```
+
+※ フォルダは空で問題ありません。
+
+
+---
 
 ####   テストの実行
 
